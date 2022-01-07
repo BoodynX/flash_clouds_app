@@ -1,5 +1,7 @@
+import 'package:flash_clouds_app/helpers/show_dialog_with_text.dart';
 import 'package:flash_clouds_app/validators/addValidator.dart';
 import 'package:flutter/material.dart';
+import 'package:localstore/localstore.dart';
 
 class Add extends StatefulWidget {
   const Add({Key? key}) : super(key: key);
@@ -28,6 +30,8 @@ class _AddState extends State<Add> {
       height: 20.0,
     );
 
+    final db = Localstore.instance;
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -40,34 +44,64 @@ class _AddState extends State<Add> {
             key: _formKey,
             child: Column(
               children: [
-                TextFormField(
-                  decoration: const InputDecoration(
-                    hintText: 'What do you want to memorise',
-                    labelText: 'Card text',
-                  ),
-                  controller: addFormController,
-                  validator: addValidator,
-                  onSaved: (val) {
-                    print('saved! $val');
-                  },
-                ),
+                _textField(db),
                 sizedBox,
-                Center(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        _formKey.currentState?.save();
-                      }
-                    },
-                    child: const Text('Add'),
-                  ),
-                ),
+                _formButtons(db, context),
               ],
             ),
           ),
           sizedBox
         ],
       ),
+    );
+  }
+
+  Center _formButtons(Localstore db, BuildContext context) {
+    return Center(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                _formKey.currentState?.save();
+              }
+            },
+            child: const Text('Add'),
+          ),
+          const SizedBox(
+            width: 10.0,
+          ),
+          ElevatedButton(
+            onPressed: () {
+              db.collection('cards').get().then((value) {
+                showDialogWithText(context, value.toString());
+              });
+            },
+            child: const Text('List'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  TextFormField _textField(Localstore db) {
+    return TextFormField(
+      decoration: const InputDecoration(
+        hintText: 'What do you want to memorise',
+        labelText: 'Card text',
+      ),
+      controller: addFormController,
+      validator: addValidator,
+      onSaved: (cardContent) {
+        print('saved! $cardContent');
+        final id = db.collection('cards').doc().id;
+        db.collection('cards').doc(id).set({
+          'content': cardContent,
+          'created': DateTime.now().toString(),
+          'lastTimeKnown': 'new',
+        });
+      },
     );
   }
 

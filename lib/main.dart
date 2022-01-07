@@ -5,6 +5,7 @@ import 'views/deck.dart';
 import 'views/home.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const Main());
 }
 
