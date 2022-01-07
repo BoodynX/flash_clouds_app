@@ -30,26 +30,30 @@ class _MainState extends State<Main> {
         body: SafeArea(
           child: _pages[_bottomNavState],
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.post_add_outlined),
-              label: 'Add',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.reorder),
-              label: 'Deck',
-            ),
-          ],
-          currentIndex: _bottomNavState,
-          selectedItemColor: Colors.amber[800],
-          onTap: _updateBottomNavState,
-        ),
+        bottomNavigationBar: _buildBottomNavigationBar(),
       ),
+    );
+  }
+
+  BottomNavigationBar _buildBottomNavigationBar() {
+    return BottomNavigationBar(
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: 'Home',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.post_add_outlined),
+          label: 'Add',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.reorder),
+          label: 'Deck',
+        ),
+      ],
+      currentIndex: _bottomNavState,
+      selectedItemColor: Colors.amber[800],
+      onTap: _updateBottomNavState,
     );
   }
 
