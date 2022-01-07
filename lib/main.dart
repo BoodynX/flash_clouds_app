@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'views/add.dart';
+import 'views/deck.dart';
+import 'views/home.dart';
+
 void main() {
   runApp(const Main());
 }
@@ -13,6 +17,7 @@ class Main extends StatefulWidget {
 
 class _MainState extends State<Main> {
   int _bottomNavState = 0;
+  final List<Widget> _pages = [const Home(), const Add(), const Deck()];
 
   @override
   Widget build(BuildContext context) {
@@ -22,34 +27,7 @@ class _MainState extends State<Main> {
           title: const Text('Flash Clouds'),
         ),
         body: SafeArea(
-          child: Center(
-            child: Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 20.0),
-                    height: 150.0,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(
-                          width: 1.0,
-                          color: Colors.blueGrey.withOpacity(0.3),
-                        ),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(10)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.blueGrey.withOpacity(0.3),
-                            spreadRadius: 3,
-                            blurRadius: 5,
-                            offset: const Offset(0, 3),
-                          )
-                        ]),
-                  ),
-                )
-              ],
-            ),
-          ),
+          child: _pages[_bottomNavState],
         ),
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
