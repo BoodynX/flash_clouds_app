@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'views/add.dart';
-import 'views/deck.dart';
-import 'views/home.dart';
+import 'infra/views/add.dart';
+import 'infra/views/deck.dart';
+import 'infra/views/home.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

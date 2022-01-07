@@ -1,7 +1,7 @@
-import 'package:flash_clouds_app/helpers/show_dialog_with_text.dart';
-import 'package:flash_clouds_app/validators/addValidator.dart';
+import 'package:flash_clouds_app/infra/helpers/show_dialog_with_text.dart';
+import 'package:flash_clouds_app/infra/local_db/cards_repository.dart';
+import 'package:flash_clouds_app/domain/validators/card_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:localstore/localstore.dart';
 
 class Add extends StatefulWidget {
   const Add({Key? key}) : super(key: key);
@@ -30,7 +30,7 @@ class _AddState extends State<Add> {
       height: 20.0,
     );
 
-    final db = Localstore.instance;
+    final cards = CardsRepository();
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -44,9 +44,9 @@ class _AddState extends State<Add> {
             key: _formKey,
             child: Column(
               children: [
-                _textField(db),
+                _textField(cards),
                 sizedBox,
-                _formButtons(db, context),
+                _formButtons(cards, context),
               ],
             ),
           ),
@@ -56,7 +56,7 @@ class _AddState extends State<Add> {
     );
   }
 
-  Center _formButtons(Localstore db, BuildContext context) {
+  Center _formButtons(CardsRepository db, BuildContext context) {
     return Center(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -74,7 +74,7 @@ class _AddState extends State<Add> {
           ),
           ElevatedButton(
             onPressed: () {
-              db.collection('cards').get().then((value) {
+              db.getAll().then((value) {
                 showDialogWithText(context, value.toString());
               });
             },
@@ -85,22 +85,16 @@ class _AddState extends State<Add> {
     );
   }
 
-  TextFormField _textField(Localstore db) {
+  TextFormField _textField(CardsRepository cards) {
     return TextFormField(
       decoration: const InputDecoration(
         hintText: 'What do you want to memorise',
         labelText: 'Card text',
       ),
       controller: addFormController,
-      validator: addValidator,
+      validator: cardValidator,
       onSaved: (cardContent) {
-        print('saved! $cardContent');
-        final id = db.collection('cards').doc().id;
-        db.collection('cards').doc(id).set({
-          'content': cardContent,
-          'created': DateTime.now().toString(),
-          'lastTimeKnown': 'new',
-        });
+        cards.add(cardContent);
       },
     );
   }

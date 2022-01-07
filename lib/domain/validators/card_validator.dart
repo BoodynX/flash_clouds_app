@@ -1,4 +1,4 @@
-String? addValidator(String? value) {
+String? cardValidator(String? value) {
   if (value == null || value.isEmpty) {
     return 'Card can\'t be empty';
   }
