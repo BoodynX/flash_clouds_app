@@ -1,6 +1,7 @@
 import 'package:flash_clouds_app/infra/helpers/show_dialog_with_text.dart';
 import 'package:flash_clouds_app/infra/local_db/cards_repository.dart';
 import 'package:flash_clouds_app/domain/validators/card_validator.dart';
+import 'package:flash_clouds_app/domain/entities/card_entity.dart';
 import 'package:flutter/material.dart';
 
 class Add extends StatefulWidget {
@@ -12,15 +13,15 @@ class Add extends StatefulWidget {
 
 class _AddState extends State<Add> {
   final _formKey = GlobalKey<FormState>();
-  final frontTextController = TextEditingController();
-  final backTextController = TextEditingController();
+  final frontTxtCtrl = TextEditingController();
+  final backTxtCtrl = TextEditingController();
   List latestCards = [];
   CardsRepository cards = CardsRepository();
 
   @override
   void dispose() {
-    frontTextController.dispose();
-    backTextController.dispose();
+    frontTxtCtrl.dispose();
+    backTxtCtrl.dispose();
     super.dispose();
   }
 
@@ -42,9 +43,9 @@ class _AddState extends State<Add> {
             key: _formKey,
             child: Column(
               children: [
-                _textField(frontTextController, 'Question', 'Card front'),
+                _textField(frontTxtCtrl, 'Question', 'Card front'),
                 sizedBox,
-                _textField(backTextController, 'Answer', 'Card back'),
+                _textField(backTxtCtrl, 'Answer', 'Card back'),
                 sizedBox,
                 _formButtons(context),
               ],
@@ -64,7 +65,9 @@ class _AddState extends State<Add> {
           ElevatedButton(
             onPressed: () {
               if (_formKey.currentState!.validate()) {
-                cards.add(frontTextController.text, backTextController.text);
+                var card =
+                    CardEntity.create(frontTxtCtrl.text, backTxtCtrl.text);
+                cards.save(card);
               }
             },
             child: const Text('Add'),
@@ -73,10 +76,9 @@ class _AddState extends State<Add> {
             width: 10.0,
           ),
           ElevatedButton(
-            onPressed: () {
-              cards.getAll().then((value) {
-                showDialogWithText(context, value.toString());
-              });
+            onPressed: () async {
+              List<CardEntity?> value = await cards.getAll();
+              showDialogWithText(context, value.toString());
             },
             child: const Text('List'),
           ),
