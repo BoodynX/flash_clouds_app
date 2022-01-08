@@ -11,16 +11,16 @@ class Add extends StatefulWidget {
 }
 
 class _AddState extends State<Add> {
-  // Create a text controller and use it to retrieve the current value
-  // of the TextField.
   final _formKey = GlobalKey<FormState>();
-  final addFormController = TextEditingController();
-  final List latestCards = [];
+  final frontTextController = TextEditingController();
+  final backTextController = TextEditingController();
+  List latestCards = [];
+  CardsRepository cards = CardsRepository();
 
   @override
   void dispose() {
-    // Clean up the controller when the widget is disposed.
-    addFormController.dispose();
+    frontTextController.dispose();
+    backTextController.dispose();
     super.dispose();
   }
 
@@ -29,8 +29,6 @@ class _AddState extends State<Add> {
     const sizedBox = SizedBox(
       height: 20.0,
     );
-
-    final cards = CardsRepository();
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -44,9 +42,11 @@ class _AddState extends State<Add> {
             key: _formKey,
             child: Column(
               children: [
-                _textField(cards),
+                _textField(frontTextController, 'Question', 'Card front'),
                 sizedBox,
-                _formButtons(cards, context),
+                _textField(backTextController, 'Answer', 'Card back'),
+                sizedBox,
+                _formButtons(context),
               ],
             ),
           ),
@@ -56,7 +56,7 @@ class _AddState extends State<Add> {
     );
   }
 
-  Center _formButtons(CardsRepository db, BuildContext context) {
+  Center _formButtons(BuildContext context) {
     return Center(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -64,7 +64,7 @@ class _AddState extends State<Add> {
           ElevatedButton(
             onPressed: () {
               if (_formKey.currentState!.validate()) {
-                _formKey.currentState?.save();
+                cards.add(frontTextController.text, backTextController.text);
               }
             },
             child: const Text('Add'),
@@ -74,7 +74,7 @@ class _AddState extends State<Add> {
           ),
           ElevatedButton(
             onPressed: () {
-              db.getAll().then((value) {
+              cards.getAll().then((value) {
                 showDialogWithText(context, value.toString());
               });
             },
@@ -85,17 +85,15 @@ class _AddState extends State<Add> {
     );
   }
 
-  TextFormField _textField(CardsRepository cards) {
+  TextFormField _textField(
+      TextEditingController textController, String hint, String label) {
     return TextFormField(
-      decoration: const InputDecoration(
-        hintText: 'What do you want to memorise',
-        labelText: 'Card text',
+      decoration: InputDecoration(
+        hintText: hint,
+        labelText: label,
       ),
-      controller: addFormController,
+      controller: textController,
       validator: cardValidator,
-      onSaved: (cardContent) {
-        cards.add(cardContent);
-      },
     );
   }
 

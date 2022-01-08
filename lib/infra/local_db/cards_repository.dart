@@ -8,10 +8,11 @@ class CardsRepository {
     return ls.collection(collection).get();
   }
 
-  add(content) async {
+  add(front, back) async {
     final id = ls.collection(collection).doc().id;
     ls.collection(collection).doc(id).set({
-      'content': content,
+      'front': front,
+      'back': back,
       'created': DateTime.now().toString(),
       'lastTimeKnown': 'new',
     });
