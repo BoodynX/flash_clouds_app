@@ -36,6 +36,22 @@ class CardsRepository implements repositories.CardsRepository {
   }
 
   @override
+  Future<List<CardEntity?>> getAllSortByDate() async {
+    List<CardEntity?> cards = await getAll();
+    cards.sort(_sortByCreate);
+
+    return cards;
+  }
+
+  @override
+  Future<CardEntity?> getLatest() async {
+    List<CardEntity?> cards = await getAll();
+    cards.sort(_sortByCreate);
+
+    return cards.last;
+  }
+
+  @override
   Future<void> save(CardEntity card) async {
     await ls.collection(collection).doc(card.id).set({
       'front': card.front,
@@ -45,16 +61,14 @@ class CardsRepository implements repositories.CardsRepository {
     });
   }
 
-  @override
-  Future<CardEntity?> getLatest() async {
-    List<CardEntity?> cards = await getAll();
-    cards.sort((a, b) {
-      if (a == null || b == null) {
-        return 0;
-      }
-      return a.created.compareTo(b.created);
-    });
+  int _sortByCreate(a, b) {
+    return _paramsNotNull(a, b) ? a.created.compareTo(b.created) : 0;
+  }
 
-    return cards.last;
+  bool _paramsNotNull(a, b) {
+    if (a == null || b == null) {
+      return false;
+    }
+    return true;
   }
 }

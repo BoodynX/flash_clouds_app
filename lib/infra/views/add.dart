@@ -1,7 +1,7 @@
-import 'package:flash_clouds_app/infra/helpers/show_dialog_with_text.dart';
 import 'package:flash_clouds_app/infra/local_db/cards_repository.dart';
 import 'package:flash_clouds_app/domain/validators/card_validator.dart';
 import 'package:flash_clouds_app/domain/entities/card_entity.dart';
+import 'package:flash_clouds_app/infra/views/elements/flash_card.dart';
 import 'package:flutter/material.dart';
 
 class Add extends StatefulWidget {
@@ -16,7 +16,7 @@ class _AddState extends State<Add> {
   final _frontTxtCtrl = TextEditingController();
   final _backTxtCtrl = TextEditingController();
   List _latestCards = [];
-  CardsRepository _cardsRepo = CardsRepository();
+  final CardsRepository _cardsRepo = CardsRepository();
 
   @override
   void dispose() {
@@ -28,7 +28,7 @@ class _AddState extends State<Add> {
   @override
   Widget build(BuildContext context) {
     const sizedBox = SizedBox(
-      height: 20.0,
+      height: 30.0,
     );
 
     _refreshCardsList();
@@ -39,6 +39,8 @@ class _AddState extends State<Add> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
+          const Center(child: Text('Last added card')),
+          sizedBox,
           _buildLatestCardsList(),
           sizedBox,
           Form(
@@ -61,19 +63,17 @@ class _AddState extends State<Add> {
 
   Column _buildLatestCardsList() {
     if (_latestCards.isEmpty) {
-      return Column();
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: const [FlashCard(cardText: '')],
+      );
     }
 
     CardEntity first = _latestCards.last;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(first.id),
-        Text(first.created.toString().substring(0, 19)),
-        Text(first.front),
-        Text(first.back),
-      ],
+      children: [FlashCard(cardText: first.front)],
     );
   }
 
@@ -96,13 +96,6 @@ class _AddState extends State<Add> {
           const SizedBox(
             width: 10.0,
           ),
-          ElevatedButton(
-            onPressed: () async {
-              List<CardEntity?> value = await _cardsRepo.getAll();
-              showDialogWithText(context, value.toString());
-            },
-            child: const Text('List'),
-          ),
         ],
       ),
     );
@@ -120,18 +113,17 @@ class _AddState extends State<Add> {
     );
   }
 
-  _refreshCardsList() {
-    _cardsRepo.getLatest().then((CardEntity? card) {
-      if (card == null) {
-        return;
-      }
+  _refreshCardsList() async {
+    CardEntity? card = await _cardsRepo.getLatest();
+    if (card == null) {
+      return;
+    }
 
-      if (_latestCards.isNotEmpty && card.id == _latestCards.last.id) {
-        return;
-      }
+    if (_latestCards.isNotEmpty && card.id == _latestCards.last.id) {
+      return;
+    }
 
-      _latestCards = [card];
-      setState(() {});
-    });
+    _latestCards = [card];
+    setState(() {});
   }
 }
