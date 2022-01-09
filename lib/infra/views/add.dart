@@ -13,15 +13,15 @@ class Add extends StatefulWidget {
 
 class _AddState extends State<Add> {
   final _formKey = GlobalKey<FormState>();
-  final frontTxtCtrl = TextEditingController();
-  final backTxtCtrl = TextEditingController();
-  List latestCards = [];
-  CardsRepository cardsRepo = CardsRepository();
+  final _frontTxtCtrl = TextEditingController();
+  final _backTxtCtrl = TextEditingController();
+  List _latestCards = [];
+  CardsRepository _cardsRepo = CardsRepository();
 
   @override
   void dispose() {
-    frontTxtCtrl.dispose();
-    backTxtCtrl.dispose();
+    _frontTxtCtrl.dispose();
+    _backTxtCtrl.dispose();
     super.dispose();
   }
 
@@ -45,9 +45,9 @@ class _AddState extends State<Add> {
             key: _formKey,
             child: Column(
               children: [
-                _textField(frontTxtCtrl, 'Question', 'Card front'),
+                _textField(_frontTxtCtrl, 'Question', 'Card front'),
                 sizedBox,
-                _textField(backTxtCtrl, 'Answer', 'Card back'),
+                _textField(_backTxtCtrl, 'Answer', 'Card back'),
                 sizedBox,
                 _formButtons(context),
               ],
@@ -60,11 +60,11 @@ class _AddState extends State<Add> {
   }
 
   Column _buildLatestCardsList() {
-    if (latestCards.isEmpty) {
+    if (_latestCards.isEmpty) {
       return Column();
     }
 
-    CardEntity first = latestCards.last;
+    CardEntity first = _latestCards.last;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,8 +86,8 @@ class _AddState extends State<Add> {
             onPressed: () async {
               if (_formKey.currentState!.validate()) {
                 CardEntity card =
-                    CardEntity.create(frontTxtCtrl.text, backTxtCtrl.text);
-                await cardsRepo.save(card);
+                    CardEntity.create(_frontTxtCtrl.text, _backTxtCtrl.text);
+                await _cardsRepo.save(card);
                 _refreshCardsList();
               }
             },
@@ -98,7 +98,7 @@ class _AddState extends State<Add> {
           ),
           ElevatedButton(
             onPressed: () async {
-              List<CardEntity?> value = await cardsRepo.getAll();
+              List<CardEntity?> value = await _cardsRepo.getAll();
               showDialogWithText(context, value.toString());
             },
             child: const Text('List'),
@@ -121,16 +121,16 @@ class _AddState extends State<Add> {
   }
 
   _refreshCardsList() {
-    cardsRepo.getLatest().then((CardEntity? card) {
+    _cardsRepo.getLatest().then((CardEntity? card) {
       if (card == null) {
         return;
       }
 
-      if (latestCards.isNotEmpty && card.id == latestCards.last.id) {
+      if (_latestCards.isNotEmpty && card.id == _latestCards.last.id) {
         return;
       }
 
-      latestCards = [card];
+      _latestCards = [card];
       setState(() {});
     });
   }
