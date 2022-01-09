@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'infra/views/add.dart';
-import 'infra/views/deck.dart';
-import 'infra/views/home.dart';
+import 'infra/views/learn.dart';
+import 'infra/views/cards_manager.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +18,11 @@ class Main extends StatefulWidget {
 
 class _MainState extends State<Main> {
   int _bottomNavState = 0;
-  final List<Widget> _pages = [const Home(), const Add(), const Deck()];
+  final List<Widget> _pages = [
+    const CardsManager(),
+    const Add(),
+    const Learn()
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -39,16 +43,16 @@ class _MainState extends State<Main> {
     return BottomNavigationBar(
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
+          icon: Icon(Icons.receipt_long),
+          label: 'Cards',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.post_add_outlined),
           label: 'Add',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.reorder),
-          label: 'Deck',
+          icon: Icon(Icons.school),
+          label: 'Learn',
         ),
       ],
       currentIndex: _bottomNavState,

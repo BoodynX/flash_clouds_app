@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class Deck extends StatefulWidget {
-  const Deck({Key? key}) : super(key: key);
+class Learn extends StatefulWidget {
+  const Learn({Key? key}) : super(key: key);
 
   @override
-  _DeckState createState() => _DeckState();
+  _LearnState createState() => _LearnState();
 }
 
-class _DeckState extends State<Deck> {
+class _LearnState extends State<Learn> {
   @override
   Widget build(BuildContext context) {
     return Center(
