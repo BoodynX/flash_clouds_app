@@ -16,7 +16,7 @@ class _AddState extends State<Add> {
   final frontTxtCtrl = TextEditingController();
   final backTxtCtrl = TextEditingController();
   List latestCards = [];
-  CardsRepository cards = CardsRepository();
+  CardsRepository cardsRepo = CardsRepository();
 
   @override
   void dispose() {
@@ -31,13 +31,15 @@ class _AddState extends State<Add> {
       height: 20.0,
     );
 
+    refreshCardsList();
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Text(getCardsList()),
+          _buildLatestCardsList(),
           sizedBox,
           Form(
             key: _formKey,
@@ -57,17 +59,36 @@ class _AddState extends State<Add> {
     );
   }
 
+  Column _buildLatestCardsList() {
+    if (latestCards.isEmpty) {
+      return Column();
+    }
+
+    CardEntity first = latestCards.last;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(first.id),
+        Text(first.created.toString().substring(0, 19)),
+        Text(first.front),
+        Text(first.back),
+      ],
+    );
+  }
+
   Center _formButtons(BuildContext context) {
     return Center(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               if (_formKey.currentState!.validate()) {
-                var card =
+                CardEntity card =
                     CardEntity.create(frontTxtCtrl.text, backTxtCtrl.text);
-                cards.save(card);
+                await cardsRepo.save(card);
+                refreshCardsList();
               }
             },
             child: const Text('Add'),
@@ -77,7 +98,7 @@ class _AddState extends State<Add> {
           ),
           ElevatedButton(
             onPressed: () async {
-              List<CardEntity?> value = await cards.getAll();
+              List<CardEntity?> value = await cardsRepo.getAll();
               showDialogWithText(context, value.toString());
             },
             child: const Text('List'),
@@ -99,9 +120,18 @@ class _AddState extends State<Add> {
     );
   }
 
-  String getCardsList() {
-    return '''
-2021-01-07 13:00
-This will be a list''';
+  refreshCardsList() {
+    cardsRepo.getLatest().then((CardEntity? card) {
+      if (card == null) {
+        return;
+      }
+
+      if (latestCards.isNotEmpty && card.id == latestCards.last.id) {
+        return;
+      }
+
+      latestCards = [card];
+      setState(() {});
+    });
   }
 }

@@ -31,18 +31,30 @@ class CardsRepository implements repositories.CardsRepository {
               : DateTime.parse(values['lastKnown']),
         ));
       }
-
       return cards;
     });
   }
 
   @override
-  save(CardEntity card) async {
-    ls.collection(collection).doc(card.id).set({
+  Future<void> save(CardEntity card) async {
+    await ls.collection(collection).doc(card.id).set({
       'front': card.front,
       'back': card.back,
       'created': card.created.toString(),
       'lastKnown': card.lastKnown.toString(),
     });
+  }
+
+  @override
+  Future<CardEntity?> getLatest() async {
+    List<CardEntity?> cards = await getAll();
+    cards.sort((a, b) {
+      if (a == null || b == null) {
+        return 0;
+      }
+      return a.created.compareTo(b.created);
+    });
+
+    return cards.last;
   }
 }
