@@ -31,7 +31,7 @@ class _AddState extends State<Add> {
       height: 20.0,
     );
 
-    refreshCardsList();
+    _refreshCardsList();
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -88,7 +88,7 @@ class _AddState extends State<Add> {
                 CardEntity card =
                     CardEntity.create(frontTxtCtrl.text, backTxtCtrl.text);
                 await cardsRepo.save(card);
-                refreshCardsList();
+                _refreshCardsList();
               }
             },
             child: const Text('Add'),
@@ -120,7 +120,7 @@ class _AddState extends State<Add> {
     );
   }
 
-  refreshCardsList() {
+  _refreshCardsList() {
     cardsRepo.getLatest().then((CardEntity? card) {
       if (card == null) {
         return;
