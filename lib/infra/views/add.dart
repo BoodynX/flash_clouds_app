@@ -42,9 +42,15 @@ class _AddState extends State<Add> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           const Center(child: Text('Last added card')),
-          sizedBox,
-          _buildLatestCardsList(),
-          sizedBox,
+          Expanded(
+            child: ListView(
+              children: [
+                sizedBox,
+                _buildLatestCardsList(),
+                sizedBox,
+              ],
+            ),
+          ),
           Form(
             key: _formKey,
             child: Column(
