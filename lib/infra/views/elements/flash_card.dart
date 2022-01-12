@@ -1,5 +1,4 @@
 import 'package:flash_clouds_app/domain/entities/card_entity.dart';
-import 'package:flash_clouds_app/infra/local_db/cards_repository.dart';
 import 'package:flutter/material.dart';
 
 class FlashCard extends StatefulWidget {
@@ -38,7 +37,7 @@ class _FlashCardState extends State<FlashCard> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               IconButton(
-                  onPressed: _deleteCard,
+                  onPressed: widget.cardEntity.delete,
                   icon: const Icon(
                     Icons.delete_outlined,
                     size: 20.0,
@@ -63,11 +62,5 @@ class _FlashCardState extends State<FlashCard> {
         ],
       ),
     );
-  }
-
-  void _deleteCard() async {
-    var repo = CardsRepository();
-    repo.delete([widget.cardEntity.id]);
-    //  TODO do something to refresh the containing view
   }
 }

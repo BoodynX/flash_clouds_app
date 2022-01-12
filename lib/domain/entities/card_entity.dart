@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flash_clouds_app/domain/repositories/i_cards_repository.dart';
 
 class CardEntity {
   String id;
@@ -7,14 +7,17 @@ class CardEntity {
   final DateTime _created;
   DateTime? lastKnown;
 
-  CardEntity(this.id, this.front, this.back, this._created, this.lastKnown);
+  ICardsRepository repo;
 
-  static CardEntity create(String front, String back) {
-    return CardEntity(
-        UniqueKey().toString(), front, back, DateTime.now(), null);
-  }
+  CardEntity(
+      this.repo, this.id, this.front, this.back, this._created, this.lastKnown);
 
   DateTime get created {
     return _created;
+  }
+
+  void delete() {
+    repo.delete([id]);
+    //  TODO do something to refresh the containing view
   }
 }

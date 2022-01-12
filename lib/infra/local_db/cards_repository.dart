@@ -1,10 +1,11 @@
 import 'package:flash_clouds_app/domain/entities/card_entity.dart';
-import 'package:flash_clouds_app/domain/repositories/cards_repository.dart'
-    as repositories;
+import 'package:flash_clouds_app/domain/repositories/i_cards_repository.dart';
+import 'package:flash_clouds_app/infra/factories/cards_factory.dart';
 import 'package:localstore/localstore.dart';
 
-class CardsRepository implements repositories.CardsRepository {
+class CardsRepository implements ICardsRepository {
   Localstore ls = Localstore.instance;
+  CardsFactory factory = CardsFactory();
   String collection = 'cards';
 
   @override
@@ -21,7 +22,7 @@ class CardsRepository implements repositories.CardsRepository {
       for (MapEntry item in data.entries) {
         Map values = item.value;
 
-        cards.add(CardEntity(
+        cards.add(factory.create(
           item.key,
           values['front'],
           values['back'],

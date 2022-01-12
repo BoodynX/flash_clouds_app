@@ -1,6 +1,7 @@
-import 'package:flash_clouds_app/infra/local_db/cards_repository.dart';
-import 'package:flash_clouds_app/domain/validators/card_validator.dart';
 import 'package:flash_clouds_app/domain/entities/card_entity.dart';
+import 'package:flash_clouds_app/domain/validators/card_validator.dart';
+import 'package:flash_clouds_app/infra/factories/cards_factory.dart';
+import 'package:flash_clouds_app/infra/local_db/cards_repository.dart';
 import 'package:flash_clouds_app/infra/views/elements/flash_card.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +18,7 @@ class _AddState extends State<Add> {
   final _backTxtCtrl = TextEditingController();
   List _latestCards = [];
   final CardsRepository _cardsRepo = CardsRepository();
+  final CardsFactory _cardsFactory = CardsFactory();
 
   @override
   void dispose() {
@@ -85,8 +87,8 @@ class _AddState extends State<Add> {
           ElevatedButton(
             onPressed: () async {
               if (_formKey.currentState!.validate()) {
-                CardEntity card =
-                    CardEntity.create(_frontTxtCtrl.text, _backTxtCtrl.text);
+                CardEntity card = _cardsFactory.createNew(
+                    _frontTxtCtrl.text, _backTxtCtrl.text);
                 await _cardsRepo.save(card);
                 _refreshCardsList();
               }

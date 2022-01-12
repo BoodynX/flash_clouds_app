@@ -1,4 +1,3 @@
-import 'package:flash_clouds_app/infra/views/elements/flash_card.dart';
 import 'package:flutter/material.dart';
 
 class Learn extends StatefulWidget {
