@@ -46,13 +46,12 @@ class _CardsManagerState extends State<CardsManager> {
     cardWidgets.add(const SizedBox(height: 10.0));
 
     for (CardEntity? card in _cardsList) {
-      String front = '';
-      if (card != null) {
-        front = card.front;
+      if (card == null) {
+        continue;
       }
 
       FlashCard fc = FlashCard(
-        cardText: front,
+        cardEntity: card,
       );
       cardWidgets.add(const SizedBox(height: 10.0));
       cardWidgets.add(fc);

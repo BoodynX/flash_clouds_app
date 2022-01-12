@@ -65,15 +65,15 @@ class _AddState extends State<Add> {
     if (_latestCards.isEmpty) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [FlashCard(cardText: '')],
+        children: const [],
       );
     }
 
-    CardEntity first = _latestCards.last;
+    CardEntity lastCard = _latestCards.last;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [FlashCard(cardText: first.front)],
+      children: [FlashCard(cardEntity: lastCard)],
     );
   }
 

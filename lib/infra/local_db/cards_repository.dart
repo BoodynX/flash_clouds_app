@@ -71,4 +71,12 @@ class CardsRepository implements repositories.CardsRepository {
     }
     return true;
   }
+
+  @override
+  void delete(List<String> ids) async {
+    for (String id in ids) {
+      // TODO get rid of that "6"
+      await ls.collection(collection).doc(id.substring(6)).delete();
+    }
+  }
 }

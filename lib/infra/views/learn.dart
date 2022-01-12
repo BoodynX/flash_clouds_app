@@ -15,9 +15,7 @@ class _LearnState extends State<Learn> {
       child: Row(
         children: const [
           Expanded(
-            child: FlashCard(
-              cardText: '',
-            ),
+            child: Text('Dummy'),
           )
         ],
       ),

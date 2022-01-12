@@ -7,7 +7,7 @@ abstract class CardsRepository {
 
   Future<CardEntity?> getLatest();
 
-  // CardEntity getById(String id);
-
   void save(CardEntity card);
+
+  void delete(List<String> id);
 }

@@ -1,9 +1,11 @@
+import 'package:flash_clouds_app/domain/entities/card_entity.dart';
+import 'package:flash_clouds_app/infra/local_db/cards_repository.dart';
 import 'package:flutter/material.dart';
 
 class FlashCard extends StatefulWidget {
-  final String cardText;
+  final CardEntity cardEntity;
 
-  const FlashCard({Key? key, required this.cardText}) : super(key: key);
+  const FlashCard({Key? key, required this.cardEntity}) : super(key: key);
 
   @override
   State<FlashCard> createState() => _FlashCardState();
@@ -14,7 +16,6 @@ class _FlashCardState extends State<FlashCard> {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20.0),
-      height: 150.0,
       decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(
@@ -30,7 +31,43 @@ class _FlashCardState extends State<FlashCard> {
               offset: const Offset(0, 3),
             )
           ]),
-      child: Center(child: Text(widget.cardText)),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              IconButton(
+                  onPressed: _deleteCard,
+                  icon: const Icon(
+                    Icons.delete_outlined,
+                    size: 20.0,
+                    color: Colors.grey,
+                  ))
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Flexible(child: Text(widget.cardEntity.front)),
+              ],
+            ),
+          ),
+          Row(
+            children: const [
+              SizedBox(height: 40.0),
+            ],
+          ),
+        ],
+      ),
     );
+  }
+
+  void _deleteCard() async {
+    var repo = CardsRepository();
+    repo.delete([widget.cardEntity.id]);
+    //  TODO do something to refresh the containing view
   }
 }
