@@ -49,6 +49,10 @@ class CardsRepository implements ICardsRepository {
     List<CardEntity?> cards = await getAll();
     cards.sort(_sortByCreate);
 
+    if (cards.isEmpty) {
+      return null;
+    }
+
     return cards.last;
   }
 

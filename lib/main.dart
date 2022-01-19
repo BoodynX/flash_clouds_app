@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import 'infra/data_structures/cards_list.dart';
 import 'infra/views/add.dart';
-import 'infra/views/learn.dart';
 import 'infra/views/cards_manager.dart';
+import 'infra/views/learn.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const Main());
+  runApp(Main());
 }
 
 class Main extends StatefulWidget {
@@ -26,15 +28,18 @@ class _MainState extends State<Main> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Flash Clouds'),
+    return ChangeNotifierProvider<CardsList>(
+      create: (BuildContext context) => CardsList(),
+      child: MaterialApp(
+        home: Scaffold(
+          appBar: AppBar(
+            title: const Text('Flash Clouds'),
+          ),
+          body: SafeArea(
+            child: _pages[_bottomNavState],
+          ),
+          bottomNavigationBar: _buildBottomNavigationBar(),
         ),
-        body: SafeArea(
-          child: _pages[_bottomNavState],
-        ),
-        bottomNavigationBar: _buildBottomNavigationBar(),
       ),
     );
   }

@@ -1,5 +1,8 @@
 import 'package:flash_clouds_app/domain/entities/card_entity.dart';
+import 'package:flash_clouds_app/infra/data_structures/cards_list.dart';
+import 'package:flash_clouds_app/infra/local_db/cards_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class FlashCard extends StatefulWidget {
   final CardEntity cardEntity;
@@ -37,7 +40,14 @@ class _FlashCardState extends State<FlashCard> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               IconButton(
-                  onPressed: widget.cardEntity.delete,
+                  onPressed: () async {
+                    widget.cardEntity.delete();
+                    List<CardEntity?> cards =
+                        await CardsRepository().getAllSortByDate();
+
+                    Provider.of<CardsList>(context, listen: false)
+                        .updateList(cards);
+                  },
                   icon: const Icon(
                     Icons.delete_outlined,
                     size: 20.0,

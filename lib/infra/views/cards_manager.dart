@@ -1,6 +1,8 @@
 import 'package:flash_clouds_app/domain/entities/card_entity.dart';
+import 'package:flash_clouds_app/infra/data_structures/cards_list.dart';
 import 'package:flash_clouds_app/infra/local_db/cards_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'elements/flash_card.dart';
 
@@ -12,40 +14,37 @@ class CardsManager extends StatefulWidget {
 }
 
 class _CardsManagerState extends State<CardsManager> {
-  List<Widget> _cardsWidgetsList = [];
-  List<CardEntity?> _cardsList = [];
-
   @override
   Widget build(BuildContext context) {
     _refreshCardsList();
-    _buildCardsWidgetsList();
+
     return ListView(
-      children: _cardsWidgetsList,
+      children: _buildCardsWidgetsList(context),
     );
   }
 
-  Future<void> _refreshCardsList() async {
+  Future<List?> _refreshCardsList() async {
     List<CardEntity?> cards = await CardsRepository().getAllSortByDate();
+    List<CardEntity?> cardsList =
+        Provider.of<CardsList>(context, listen: false).cardsList;
 
     if (cards == []) {
-      return;
+      return [];
     }
 
-    if (_cardsList.isNotEmpty && cards.last?.id == _cardsList.last?.id) {
-      return;
+    if (cardsList.isNotEmpty && cards.last?.id == cardsList.last?.id) {
+      return [];
     }
 
-    setState(() {
-      _cardsList = cards;
-    });
+    Provider.of<CardsList>(context, listen: false).updateList(cards);
   }
 
-  _buildCardsWidgetsList() {
+  _buildCardsWidgetsList(context) {
     List<Widget> cardWidgets = [];
-
+    List<CardEntity?> cardsList = Provider.of<CardsList>(context).cardsList;
     cardWidgets.add(const SizedBox(height: 10.0));
 
-    for (CardEntity? card in _cardsList) {
+    for (CardEntity? card in cardsList) {
       if (card == null) {
         continue;
       }
@@ -59,8 +58,6 @@ class _CardsManagerState extends State<CardsManager> {
 
     cardWidgets.add(const SizedBox(height: 10.0));
 
-    setState(() {
-      _cardsWidgetsList = cardWidgets;
-    });
+    return cardWidgets;
   }
 }

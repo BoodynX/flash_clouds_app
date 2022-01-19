@@ -1,9 +1,11 @@
 import 'package:flash_clouds_app/domain/entities/card_entity.dart';
 import 'package:flash_clouds_app/domain/validators/card_validator.dart';
+import 'package:flash_clouds_app/infra/data_structures/cards_list.dart';
 import 'package:flash_clouds_app/infra/factories/cards_factory.dart';
 import 'package:flash_clouds_app/infra/local_db/cards_repository.dart';
 import 'package:flash_clouds_app/infra/views/elements/flash_card.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Add extends StatefulWidget {
   const Add({Key? key}) : super(key: key);
@@ -33,7 +35,7 @@ class _AddState extends State<Add> {
       height: 30.0,
     );
 
-    _refreshCardsList();
+    _refreshLastCard('first load');
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -96,7 +98,7 @@ class _AddState extends State<Add> {
                 CardEntity card = _cardsFactory.createNew(
                     _frontTxtCtrl.text, _backTxtCtrl.text);
                 await _cardsRepo.save(card);
-                _refreshCardsList();
+                _refreshLastCard('reload');
               }
             },
             child: const Text('Add'),
@@ -121,8 +123,27 @@ class _AddState extends State<Add> {
     );
   }
 
-  _refreshCardsList() async {
-    CardEntity? card = await _cardsRepo.getLatest();
+  _refreshLastCard(fl) async {
+    List<CardEntity?> cardsList = [];
+
+    if (fl == 'first load') {
+      cardsList = Provider.of<CardsList>(context).cardsList;
+    }
+
+    await _refreshCardsList();
+
+    if (fl == 'reload') {
+      cardsList = Provider.of<CardsList>(context, listen: false).cardsList;
+    }
+
+    if (cardsList.isEmpty) {
+      _latestCards = [];
+      setState(() {});
+      return;
+    }
+
+    CardEntity? card = cardsList.last;
+
     if (card == null) {
       return;
     }
@@ -133,5 +154,21 @@ class _AddState extends State<Add> {
 
     _latestCards = [card];
     setState(() {});
+  }
+
+  Future<List?> _refreshCardsList() async {
+    List<CardEntity?> cards = await CardsRepository().getAllSortByDate();
+    List<CardEntity?> cardsList =
+        Provider.of<CardsList>(context, listen: false).cardsList;
+
+    if (cards == []) {
+      return [];
+    }
+
+    if (cardsList.isNotEmpty && cards.last?.id == cardsList.last?.id) {
+      return [];
+    }
+
+    Provider.of<CardsList>(context, listen: false).updateList(cards);
   }
 }
