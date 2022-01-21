@@ -66,6 +66,14 @@ class CardsRepository implements ICardsRepository {
     });
   }
 
+  @override
+  void delete(List<String> ids) async {
+    for (String id in ids) {
+      // TODO get rid of that "6"
+      await ls.collection(collection).doc(id.substring(6)).delete();
+    }
+  }
+
   int _sortByCreate(a, b) {
     return _paramsNotNull(a, b) ? a.created.compareTo(b.created) : 0;
   }
@@ -75,13 +83,5 @@ class CardsRepository implements ICardsRepository {
       return false;
     }
     return true;
-  }
-
-  @override
-  void delete(List<String> ids) async {
-    for (String id in ids) {
-      // TODO get rid of that "6"
-      await ls.collection(collection).doc(id.substring(6)).delete();
-    }
   }
 }
