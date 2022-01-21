@@ -38,7 +38,7 @@ class _FlashCardState extends State<FlashCard> {
 
   Container _cardSide(BuildContext context, String sideText) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20.0),
+      margin: const EdgeInsets.symmetric(horizontal: 1.0),
       decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(

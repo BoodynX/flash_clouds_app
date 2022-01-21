@@ -33,7 +33,10 @@ class _CardsManagerState extends State<CardsManager> with RefreshCardsList {
         continue;
       }
 
-      FlashCard fc = FlashCard(cardEntity: card);
+      var fc = Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: FlashCard(cardEntity: card),
+      );
       cardWidgets.add(const SizedBox(height: 10.0));
       cardWidgets.add(fc);
     }
