@@ -1,13 +1,16 @@
 import 'package:flash_clouds_app/domain/entities/card_entity.dart';
 import 'package:flash_clouds_app/infra/data_structures/cards_list.dart';
 import 'package:flash_clouds_app/infra/local_db/cards_repository.dart';
+import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class FlashCard extends StatefulWidget {
   final CardEntity cardEntity;
+  final bool flipped;
 
-  const FlashCard({Key? key, required this.cardEntity}) : super(key: key);
+  const FlashCard({Key? key, required this.cardEntity, this.flipped = false})
+      : super(key: key);
 
   @override
   State<FlashCard> createState() => _FlashCardState();
@@ -16,6 +19,24 @@ class FlashCard extends StatefulWidget {
 class _FlashCardState extends State<FlashCard> {
   @override
   Widget build(BuildContext context) {
+    String front = widget.cardEntity.front;
+    String back = widget.cardEntity.back;
+
+    if (widget.flipped) {
+      front = widget.cardEntity.back;
+      back = widget.cardEntity.front;
+    }
+
+    return FlipCard(
+      fill: Fill
+          .fillBack, // Fill the back side of the card to make in the same size as the front.
+      direction: FlipDirection.HORIZONTAL, // default
+      front: _cardSide(context, front),
+      back: _cardSide(context, back),
+    );
+  }
+
+  Container _cardSide(BuildContext context, String sideText) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20.0),
       decoration: BoxDecoration(
@@ -60,7 +81,7 @@ class _FlashCardState extends State<FlashCard> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Flexible(child: Text(widget.cardEntity.front)),
+                Flexible(child: Text(sideText)),
               ],
             ),
           ),

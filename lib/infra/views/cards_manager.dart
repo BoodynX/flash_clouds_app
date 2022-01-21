@@ -33,9 +33,7 @@ class _CardsManagerState extends State<CardsManager> with RefreshCardsList {
         continue;
       }
 
-      FlashCard fc = FlashCard(
-        cardEntity: card,
-      );
+      FlashCard fc = FlashCard(cardEntity: card);
       cardWidgets.add(const SizedBox(height: 10.0));
       cardWidgets.add(fc);
     }
