@@ -4,6 +4,7 @@ import 'package:flash_clouds_app/infra/data_structures/cards_list.dart';
 import 'package:flash_clouds_app/infra/factories/cards_factory.dart';
 import 'package:flash_clouds_app/infra/local_db/cards_repository.dart';
 import 'package:flash_clouds_app/infra/views/elements/flash_card.dart';
+import 'package:flash_clouds_app/infra/views/mixins/refresh_cards_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,7 +15,7 @@ class Add extends StatefulWidget {
   _AddState createState() => _AddState();
 }
 
-class _AddState extends State<Add> {
+class _AddState extends State<Add> with RefreshCardsList {
   final _formKey = GlobalKey<FormState>();
   final _frontTxtCtrl = TextEditingController();
   final _backTxtCtrl = TextEditingController();
@@ -35,7 +36,7 @@ class _AddState extends State<Add> {
       height: 30.0,
     );
 
-    _refreshLastCard('first load');
+    _setLastCard(Provider.of<CardsList>(context).cardsList);
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -98,7 +99,7 @@ class _AddState extends State<Add> {
                 CardEntity card = _cardsFactory.createNew(
                     _frontTxtCtrl.text, _backTxtCtrl.text);
                 await _cardsRepo.save(card);
-                _refreshLastCard('reload');
+                _refreshLastCard();
               }
             },
             child: const Text('Add'),
@@ -123,19 +124,14 @@ class _AddState extends State<Add> {
     );
   }
 
-  _refreshLastCard(fl) async {
+  _refreshLastCard() async {
     List<CardEntity?> cardsList = [];
+    await refreshCardsList(context);
+    cardsList = Provider.of<CardsList>(context, listen: false).cardsList;
+    _setLastCard(cardsList);
+  }
 
-    if (fl == 'first load') {
-      cardsList = Provider.of<CardsList>(context).cardsList;
-    }
-
-    await _refreshCardsList();
-
-    if (fl == 'reload') {
-      cardsList = Provider.of<CardsList>(context, listen: false).cardsList;
-    }
-
+  _setLastCard(List<CardEntity?> cardsList) {
     if (cardsList.isEmpty) {
       _latestCards = [];
       setState(() {});
@@ -154,21 +150,5 @@ class _AddState extends State<Add> {
 
     _latestCards = [card];
     setState(() {});
-  }
-
-  Future<List?> _refreshCardsList() async {
-    List<CardEntity?> cards = await CardsRepository().getAllSortByDate();
-    List<CardEntity?> cardsList =
-        Provider.of<CardsList>(context, listen: false).cardsList;
-
-    if (cards == []) {
-      return [];
-    }
-
-    if (cardsList.isNotEmpty && cards.last?.id == cardsList.last?.id) {
-      return [];
-    }
-
-    Provider.of<CardsList>(context, listen: false).updateList(cards);
   }
 }

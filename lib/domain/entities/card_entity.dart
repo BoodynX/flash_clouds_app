@@ -18,6 +18,5 @@ class CardEntity {
 
   void delete() {
     repo.delete([id]);
-    //  TODO do something to refresh the containing view
   }
 }

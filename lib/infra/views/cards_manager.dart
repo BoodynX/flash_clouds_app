@@ -1,6 +1,6 @@
 import 'package:flash_clouds_app/domain/entities/card_entity.dart';
 import 'package:flash_clouds_app/infra/data_structures/cards_list.dart';
-import 'package:flash_clouds_app/infra/local_db/cards_repository.dart';
+import 'package:flash_clouds_app/infra/views/mixins/refresh_cards_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,30 +13,14 @@ class CardsManager extends StatefulWidget {
   _CardsManagerState createState() => _CardsManagerState();
 }
 
-class _CardsManagerState extends State<CardsManager> {
+class _CardsManagerState extends State<CardsManager> with RefreshCardsList {
   @override
   Widget build(BuildContext context) {
-    _refreshCardsList();
+    refreshCardsList(context);
 
     return ListView(
       children: _buildCardsWidgetsList(context),
     );
-  }
-
-  Future<List?> _refreshCardsList() async {
-    List<CardEntity?> cards = await CardsRepository().getAllSortByDate();
-    List<CardEntity?> cardsList =
-        Provider.of<CardsList>(context, listen: false).cardsList;
-
-    if (cards == []) {
-      return [];
-    }
-
-    if (cardsList.isNotEmpty && cards.last?.id == cardsList.last?.id) {
-      return [];
-    }
-
-    Provider.of<CardsList>(context, listen: false).updateList(cards);
   }
 
   _buildCardsWidgetsList(context) {
