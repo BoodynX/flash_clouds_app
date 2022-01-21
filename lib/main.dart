@@ -8,7 +8,8 @@ import 'infra/views/cards_manager.dart';
 import 'infra/views/learn.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding
+      .ensureInitialized(); // required by the local storage pkg
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(Main());
 }
