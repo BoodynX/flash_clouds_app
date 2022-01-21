@@ -18,6 +18,8 @@ class _CardsManagerState extends State<CardsManager> with RefreshCardsList {
   Widget build(BuildContext context) {
     refreshCardsList(context);
 
+    // TODO fix card flipping on removal
+
     return ListView(
       children: _buildCardsWidgetsList(context),
     );
