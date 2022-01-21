@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'infra/data_structures/cards_list.dart';
@@ -6,8 +7,9 @@ import 'infra/views/add.dart';
 import 'infra/views/cards_manager.dart';
 import 'infra/views/learn.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(Main());
 }
 
