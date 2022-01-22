@@ -39,59 +39,74 @@ class _FlashCardState extends State<FlashCard> {
   Container _cardSide(BuildContext context, String sideText) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 1.0),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(
-            width: 1.0,
-            color: Colors.blueGrey.withOpacity(0.3),
-          ),
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.blueGrey.withOpacity(0.3),
-              spreadRadius: 3,
-              blurRadius: 5,
-              offset: const Offset(0, 3),
-            )
-          ]),
+      decoration: _cardDecoration(),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              IconButton(
-                  onPressed: () async {
-                    widget.cardEntity.delete();
-                    List<CardEntity?> cards =
-                        await CardsRepository().getAllSortByDate();
-
-                    Provider.of<CardsList>(context, listen: false)
-                        .updateList(cards);
-                  },
-                  icon: const Icon(
-                    Icons.delete_outlined,
-                    size: 20.0,
-                    color: Colors.grey,
-                  ))
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Flexible(child: Text(sideText)),
-              ],
-            ),
-          ),
-          Row(
-            children: const [
-              SizedBox(height: 40.0),
-            ],
-          ),
+          _topRowEditing(context),
+          _middleRowContent(sideText),
+          _bottomRow(),
         ],
       ),
     );
+  }
+
+  Row _topRowEditing(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        IconButton(
+            onPressed: () async {
+              widget.cardEntity.delete();
+              List<CardEntity?> cards =
+                  await CardsRepository().getAllSortByDate();
+
+              Provider.of<CardsList>(context, listen: false).updateList(cards);
+            },
+            icon: const Icon(
+              Icons.delete_outlined,
+              size: 20.0,
+              color: Colors.grey,
+            ))
+      ],
+    );
+  }
+
+  Padding _middleRowContent(String sideText) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Flexible(child: Text(sideText)),
+        ],
+      ),
+    );
+  }
+
+  Row _bottomRow() {
+    return Row(
+      children: const [
+        SizedBox(height: 40.0),
+      ],
+    );
+  }
+
+  BoxDecoration _cardDecoration() {
+    return BoxDecoration(
+        color: Colors.white,
+        border: Border.all(
+          width: 1.0,
+          color: Colors.blueGrey.withOpacity(0.3),
+        ),
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.blueGrey.withOpacity(0.3),
+            spreadRadius: 3,
+            blurRadius: 5,
+            offset: const Offset(0, 3),
+          )
+        ]);
   }
 }
