@@ -44,13 +44,13 @@ class _AddState extends State<Add> with RefreshCardsList {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          const Center(child: Text('Last added card')),
           Expanded(
             child: ListView(
               children: [
-                sizedBox,
+                // sizedBox,
                 _buildLatestCardsList(),
                 sizedBox,
+                const Center(child: Text('Last added card')),
               ],
             ),
           ),
