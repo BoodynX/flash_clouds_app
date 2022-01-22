@@ -28,8 +28,8 @@ class _FlashCardState extends State<FlashCard> {
     }
 
     return FlipCard(
-      fill: Fill
-          .fillBack, // Fill the back side of the card to make in the same size as the front.
+      // Fill the back side of the card to make in the same size as the front.
+      fill: front.length > back.length ? Fill.fillBack : Fill.fillFront,
       direction: FlipDirection.HORIZONTAL, // default
       front: _cardSide(context, front),
       back: _cardSide(context, back),
