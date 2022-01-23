@@ -33,6 +33,7 @@ class _AddState extends State<Add> with RefreshCardsList {
 
   @override
   Widget build(BuildContext context) {
+    refreshCardsList(context);
     _setLastCard(Provider.of<CardsList>(context).cardsList);
 
     return buildView();
@@ -66,7 +67,7 @@ class _AddState extends State<Add> with RefreshCardsList {
     if (_latestCards.isEmpty) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [],
+        children: [FlashCard(cardEntity: CardsFactory().createBlank())],
       );
     }
 

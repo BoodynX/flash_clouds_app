@@ -33,26 +33,33 @@ class _LearnState extends State<Learn> {
   Padding _buildView() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [_randomCard(), _learnButtons()]),
+      child:
+          Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        _randomCard(),
+        _learnButtons(),
+        const SizedBox(
+          height: 20.0,
+        )
+      ]),
     );
   }
 
-  Row _randomCard() {
-    return Row(
-      children: [
-        Expanded(
-          child: FlashCard(
+  _randomCard() {
+    return Expanded(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          FlashCard(
             cardEntity: _randomCardEntity,
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
-  Row _learnButtons() {
-    return Row(
+  _learnButtons() {
+    return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ElevatedButton(
