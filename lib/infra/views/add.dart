@@ -44,29 +44,22 @@ class _AddState extends State<Add> with RefreshCardsList {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Expanded(
-            child: ListView(
-              children: [
-                // sizedBox,
-                _buildLatestCardsList(),
-                sizedBox,
-                const Center(child: Text('Last added card')),
-              ],
-            ),
-          ),
-          Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                _textField(_frontTxtCtrl, 'Question', 'Card front'),
-                sizedBox,
-                _textField(_backTxtCtrl, 'Answer', 'Card back'),
-                sizedBox,
-                _formButtons(context),
-              ],
-            ),
-          ),
+          _latestCardsList(sizedBox),
+          _addCardForm(sizedBox, context),
           sizedBox
+        ],
+      ),
+    );
+  }
+
+  Expanded _latestCardsList(SizedBox sizedBox) {
+    return Expanded(
+      child: ListView(
+        children: [
+          // sizedBox,
+          _buildLatestCardsList(),
+          sizedBox,
+          const Center(child: Text('Last added card')),
         ],
       ),
     );
@@ -85,6 +78,63 @@ class _AddState extends State<Add> with RefreshCardsList {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [FlashCard(cardEntity: lastCard)],
+    );
+  }
+
+  TextFormField _textField(
+      TextEditingController textController, String hint, String label) {
+    return TextFormField(
+      decoration: InputDecoration(
+        hintText: hint,
+        labelText: label,
+      ),
+      controller: textController,
+      validator: cardValidator,
+    );
+  }
+
+  void _refreshLastCard() async {
+    List<CardEntity?> cardsList = [];
+    await refreshCardsList(context);
+    cardsList = Provider.of<CardsList>(context, listen: false).cardsList;
+    _setLastCard(cardsList);
+  }
+
+  void _setLastCard(List<CardEntity?> cardsList) {
+    if (cardsList.isEmpty) {
+      setState(() {
+        _latestCards = [];
+      });
+      return;
+    }
+
+    CardEntity? card = cardsList.last;
+
+    if (card == null) {
+      return;
+    }
+
+    if (_latestCards.isNotEmpty && card.id == _latestCards.last.id) {
+      return;
+    }
+
+    setState(() {
+      _latestCards = [card];
+    });
+  }
+
+  Form _addCardForm(SizedBox sizedBox, BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          _textField(_frontTxtCtrl, 'Question', 'Card front'),
+          sizedBox,
+          _textField(_backTxtCtrl, 'Answer', 'Card back'),
+          sizedBox,
+          _formButtons(context),
+        ],
+      ),
     );
   }
 
@@ -112,47 +162,5 @@ class _AddState extends State<Add> with RefreshCardsList {
         ],
       ),
     );
-  }
-
-  TextFormField _textField(
-      TextEditingController textController, String hint, String label) {
-    return TextFormField(
-      decoration: InputDecoration(
-        hintText: hint,
-        labelText: label,
-      ),
-      controller: textController,
-      validator: cardValidator,
-    );
-  }
-
-  _refreshLastCard() async {
-    List<CardEntity?> cardsList = [];
-    await refreshCardsList(context);
-    cardsList = Provider.of<CardsList>(context, listen: false).cardsList;
-    _setLastCard(cardsList);
-  }
-
-  _setLastCard(List<CardEntity?> cardsList) {
-    if (cardsList.isEmpty) {
-      setState(() {
-        _latestCards = [];
-      });
-      return;
-    }
-
-    CardEntity? card = cardsList.last;
-
-    if (card == null) {
-      return;
-    }
-
-    if (_latestCards.isNotEmpty && card.id == _latestCards.last.id) {
-      return;
-    }
-
-    setState(() {
-      _latestCards = [card];
-    });
   }
 }

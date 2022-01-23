@@ -16,7 +16,7 @@ class Learn extends StatefulWidget {
 }
 
 class _LearnState extends State<Learn> {
-  CardEntity? _randomCard;
+  CardEntity? _randomCardEntity;
 
   @override
   Widget build(BuildContext context) {
@@ -31,48 +31,52 @@ class _LearnState extends State<Learn> {
   }
 
   Widget _buildFlashCard() {
-    _randomCard ??= CardsFactory().createNew('', '');
+    _randomCardEntity ??= CardsFactory().createNew('', '');
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child:
-          Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-        Row(
-          children: [
-            Expanded(
-              child: FlashCard(
-                cardEntity: _randomCard!,
-              ),
-            ),
-          ],
-        ),
-        Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.teal)),
-                onPressed: () async {
-                  LearnController().run(context);
-                  _setRandomCard();
-                },
-                child: const Text('Draw'),
-              ),
-              const SizedBox(
-                width: 10.0,
-              ),
-            ],
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [_randomCard(), _learnButtons()]),
+    );
+  }
+
+  Row _randomCard() {
+    return Row(
+      children: [
+        Expanded(
+          child: FlashCard(
+            cardEntity: _randomCardEntity!,
           ),
-        )
-      ]),
+        ),
+      ],
+    );
+  }
+
+  Row _learnButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ElevatedButton(
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(Colors.teal)),
+          onPressed: () async {
+            LearnController().run(context);
+            _setRandomCard();
+          },
+          child: const Text('Draw'),
+        ),
+        const SizedBox(
+          width: 10.0,
+        ),
+      ],
     );
   }
 
   void _setRandomCard() {
     setState(() {
-      _randomCard = Provider.of<RandomCard>(context, listen: false).randomCard;
+      _randomCardEntity =
+          Provider.of<RandomCard>(context, listen: false).randomCard;
     });
   }
 }

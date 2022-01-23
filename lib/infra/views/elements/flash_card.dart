@@ -145,7 +145,7 @@ class _FlashCardState extends State<FlashCard> {
   Future<void> _animateDeletion() async {
     // without this, after deleting a flipped card, next card in list gets flipped instantly
     setState(() {
-      _cardColor = Colors.redAccent;
+      _cardColor = const Color.fromRGBO(255, 205, 210, 1.0);
       _opacity = 0.0;
       _opacityAnimationDuration = const Duration(milliseconds: 500);
     });
