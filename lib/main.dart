@@ -27,9 +27,9 @@ class Main extends StatefulWidget {
 class _MainState extends State<Main> {
   int _bottomNavState = 0;
   final List<Widget> _pages = [
+    const Learn(),
     const CardsManager(),
     const Add(),
-    const Learn()
   ];
 
   @override
@@ -59,16 +59,16 @@ class _MainState extends State<Main> {
     return BottomNavigationBar(
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
+          icon: Icon(Icons.school),
+          label: 'Learn',
+        ),
+        BottomNavigationBarItem(
           icon: Icon(Icons.receipt_long),
-          label: 'Cards',
+          label: 'All Cards',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.post_add_outlined),
-          label: 'Add',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.school),
-          label: 'Learn',
+          label: 'Add New',
         ),
       ],
       currentIndex: _bottomNavState,
