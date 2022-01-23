@@ -45,6 +45,7 @@ class _MainState extends State<Main> {
         home: Scaffold(
           appBar: AppBar(
             title: const Text('Flash Clouds'),
+            backgroundColor: Colors.teal,
           ),
           body: SafeArea(
             child: _pages[_bottomNavState],
@@ -72,7 +73,9 @@ class _MainState extends State<Main> {
         ),
       ],
       currentIndex: _bottomNavState,
-      selectedItemColor: Colors.amber[800],
+      selectedItemColor: Colors.amberAccent,
+      unselectedItemColor: Colors.white,
+      backgroundColor: Colors.teal,
       onTap: _updateBottomNavState,
     );
   }

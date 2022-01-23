@@ -94,6 +94,8 @@ class _AddState extends State<Add> with RefreshCardsList {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.teal)),
             onPressed: () async {
               if (_formKey.currentState!.validate()) {
                 CardEntity card = _cardsFactory.createNew(

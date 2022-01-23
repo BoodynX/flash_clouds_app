@@ -51,6 +51,9 @@ class _LearnState extends State<Learn> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.teal)),
                 onPressed: () async {
                   LearnController().run(context);
                   _setRandomCard();
