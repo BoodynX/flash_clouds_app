@@ -21,7 +21,7 @@ class _FlashCardState extends State<FlashCard> {
   late FlipCardController _controller;
   Color _cardColor = Colors.white;
   double _opacity = 1.0;
-  Duration _opacityAnimationDuration = const Duration(seconds: 1);
+  Duration _opacityAnimationDuration = const Duration(milliseconds: 500);
   bool _enableControls = true;
 
   @override
@@ -147,12 +147,12 @@ class _FlashCardState extends State<FlashCard> {
     setState(() {
       _cardColor = Colors.redAccent;
       _opacity = 0.0;
-      _opacityAnimationDuration = const Duration(seconds: 1);
+      _opacityAnimationDuration = const Duration(milliseconds: 500);
     });
     if (!_controller.state!.isFront) {
       _controller.toggleCard();
     }
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(milliseconds: 500));
     setState(() {
       _cardColor = Colors.white;
       _opacity = 1.0;

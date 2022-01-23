@@ -148,7 +148,8 @@ class _AddState extends State<Add> with RefreshCardsList {
       return;
     }
 
-    _latestCards = [card];
-    setState(() {});
+    setState(() {
+      _latestCards = [card];
+    });
   }
 }
