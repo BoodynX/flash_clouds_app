@@ -20,12 +20,11 @@ class _LearnState extends State<Learn> {
 
   @override
   Widget build(BuildContext context) {
-    LearnController().run(context);
+    _setRandomCard();
+    _setRandomCardOnFirstLoad();
 
     // Listen for change in case a card gets deleted
     Provider.of<CardsList>(context).cardsList;
-
-    _setRandomCard();
 
     return _buildView();
   }
@@ -66,7 +65,7 @@ class _LearnState extends State<Learn> {
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(Colors.teal)),
           onPressed: () async {
-            LearnController().run(context);
+            await LearnController().run(context);
             _setRandomCard();
           },
           child: const Text('Draw'),
@@ -84,5 +83,15 @@ class _LearnState extends State<Learn> {
           Provider.of<RandomCard>(context, listen: false).randomCard ??
               _randomCardEntity;
     });
+  }
+
+  void _setRandomCardOnFirstLoad() {
+    if (_randomCardEntity.front == '') {
+      LearnController().run(context)?.then((randomCard) {
+        setState(() {
+          _randomCardEntity = randomCard ?? _randomCardEntity;
+        });
+      });
+    }
   }
 }

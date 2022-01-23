@@ -22,7 +22,7 @@ class _AddState extends State<Add> with RefreshCardsList {
   List _latestCards = [];
   final CardsRepository _cardsRepo = CardsRepository();
   final CardsFactory _cardsFactory = CardsFactory();
-  final SizedBox _sizedBox = const SizedBox(height: 30.0);
+  final SizedBox _sizedBox = const SizedBox(height: 20.0);
 
   @override
   void dispose() {
@@ -45,7 +45,13 @@ class _AddState extends State<Add> with RefreshCardsList {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.end,
-        children: [_latestCardsList(), _addCardForm(), _sizedBox],
+        children: [
+          _latestCardsList(),
+          _addCardForm(),
+          _sizedBox,
+          _formButtons(),
+          _sizedBox,
+        ],
       ),
     );
   }
@@ -129,8 +135,6 @@ class _AddState extends State<Add> with RefreshCardsList {
           _textField(_frontTxtCtrl, 'Question', 'Card front'),
           _sizedBox,
           _textField(_backTxtCtrl, 'Answer', 'Card back'),
-          _sizedBox,
-          _formButtons(),
         ],
       ),
     );
@@ -153,9 +157,6 @@ class _AddState extends State<Add> with RefreshCardsList {
               }
             },
             child: const Text('Add'),
-          ),
-          const SizedBox(
-            width: 10.0,
           ),
         ],
       ),

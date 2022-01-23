@@ -5,13 +5,12 @@ import 'package:flash_clouds_app/infra/local_db/cards_repository.dart';
 import 'package:provider/provider.dart';
 
 class LearnController {
-  Future<void> run(context) async {
+  Future<CardEntity?>? run(context) async {
     LotteryMachine machine = LotteryMachine(CardsRepository());
 
-    Future<CardEntity?> card = machine.drawCard();
+    CardEntity? card = await machine.drawCard();
 
-    card.then((randomCard) {
-      Provider.of<RandomCard>(context, listen: false).updateCard(randomCard);
-    });
+    Provider.of<RandomCard>(context, listen: false).updateCard(card);
+    return card;
   }
 }
