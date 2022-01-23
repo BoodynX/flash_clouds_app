@@ -22,6 +22,7 @@ class _AddState extends State<Add> with RefreshCardsList {
   List _latestCards = [];
   final CardsRepository _cardsRepo = CardsRepository();
   final CardsFactory _cardsFactory = CardsFactory();
+  final SizedBox _sizedBox = const SizedBox(height: 30.0);
 
   @override
   void dispose() {
@@ -32,33 +33,29 @@ class _AddState extends State<Add> with RefreshCardsList {
 
   @override
   Widget build(BuildContext context) {
-    const sizedBox = SizedBox(
-      height: 30.0,
-    );
-
     _setLastCard(Provider.of<CardsList>(context).cardsList);
 
+    return buildView();
+  }
+
+  Padding buildView() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          _latestCardsList(sizedBox),
-          _addCardForm(sizedBox, context),
-          sizedBox
-        ],
+        children: [_latestCardsList(), _addCardForm(), _sizedBox],
       ),
     );
   }
 
-  Expanded _latestCardsList(SizedBox sizedBox) {
+  Expanded _latestCardsList() {
     return Expanded(
       child: ListView(
         children: [
           // sizedBox,
           _buildLatestCardsList(),
-          sizedBox,
+          _sizedBox,
           const Center(child: Text('Last added card')),
         ],
       ),
@@ -123,22 +120,22 @@ class _AddState extends State<Add> with RefreshCardsList {
     });
   }
 
-  Form _addCardForm(SizedBox sizedBox, BuildContext context) {
+  Form _addCardForm() {
     return Form(
       key: _formKey,
       child: Column(
         children: [
           _textField(_frontTxtCtrl, 'Question', 'Card front'),
-          sizedBox,
+          _sizedBox,
           _textField(_backTxtCtrl, 'Answer', 'Card back'),
-          sizedBox,
-          _formButtons(context),
+          _sizedBox,
+          _formButtons(),
         ],
       ),
     );
   }
 
-  Center _formButtons(BuildContext context) {
+  Center _formButtons() {
     return Center(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

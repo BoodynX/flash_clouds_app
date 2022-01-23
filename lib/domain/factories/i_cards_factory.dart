@@ -5,4 +5,6 @@ abstract class ICardsFactory {
       DateTime? lastKnown);
 
   CardEntity createNew(String front, String back);
+
+  CardEntity createBlank();
 }

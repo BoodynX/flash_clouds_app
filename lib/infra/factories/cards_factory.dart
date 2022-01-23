@@ -15,4 +15,10 @@ class CardsFactory implements ICardsFactory {
     return CardEntity(CardsRepository(), UniqueKey().toString(), front, back,
         DateTime.now(), null);
   }
+
+  @override
+  CardEntity createBlank() {
+    return CardEntity(CardsRepository(), UniqueKey().toString(), '', '',
+        DateTime.now(), null);
+  }
 }

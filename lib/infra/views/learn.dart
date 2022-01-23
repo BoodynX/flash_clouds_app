@@ -16,7 +16,7 @@ class Learn extends StatefulWidget {
 }
 
 class _LearnState extends State<Learn> {
-  CardEntity? _randomCardEntity;
+  CardEntity _randomCardEntity = CardsFactory().createBlank();
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +27,10 @@ class _LearnState extends State<Learn> {
 
     _setRandomCard();
 
-    return _buildFlashCard();
+    return _buildView();
   }
 
-  Widget _buildFlashCard() {
-    _randomCardEntity ??= CardsFactory().createNew('', '');
-
+  Padding _buildView() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -46,7 +44,7 @@ class _LearnState extends State<Learn> {
       children: [
         Expanded(
           child: FlashCard(
-            cardEntity: _randomCardEntity!,
+            cardEntity: _randomCardEntity,
           ),
         ),
       ],
@@ -76,7 +74,8 @@ class _LearnState extends State<Learn> {
   void _setRandomCard() {
     setState(() {
       _randomCardEntity =
-          Provider.of<RandomCard>(context, listen: false).randomCard;
+          Provider.of<RandomCard>(context, listen: false).randomCard ??
+              _randomCardEntity;
     });
   }
 }
