@@ -133,8 +133,9 @@ class _AddState extends State<Add> with RefreshCardsList {
 
   _setLastCard(List<CardEntity?> cardsList) {
     if (cardsList.isEmpty) {
-      _latestCards = [];
-      setState(() {});
+      setState(() {
+        _latestCards = [];
+      });
       return;
     }
 
