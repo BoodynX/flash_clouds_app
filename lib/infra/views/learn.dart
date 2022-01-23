@@ -43,7 +43,7 @@ class _LearnState extends State<Learn> {
     );
   }
 
-  _randomCard() {
+  Expanded _randomCard() {
     return Expanded(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -57,7 +57,7 @@ class _LearnState extends State<Learn> {
     );
   }
 
-  _learnButtons() {
+  Column _learnButtons() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
