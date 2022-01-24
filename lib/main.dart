@@ -77,6 +77,8 @@ class _MainState extends State<Main> {
       unselectedItemColor: Colors.white,
       backgroundColor: Colors.teal,
       onTap: _updateBottomNavState,
+      selectedFontSize: 12.0,
+      unselectedFontSize: 12.0,
     );
   }
 
