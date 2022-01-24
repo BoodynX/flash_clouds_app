@@ -36,10 +36,10 @@ class _AddState extends State<Add> with RefreshCardsList {
     refreshCardsList(context);
     _setLastCard(Provider.of<CardsList>(context).cardsList);
 
-    return buildView();
+    return _buildView();
   }
 
-  Padding buildView() {
+  Padding _buildView() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -85,25 +85,6 @@ class _AddState extends State<Add> with RefreshCardsList {
     );
   }
 
-  TextFormField _textField(
-      TextEditingController textController, String hint, String label) {
-    return TextFormField(
-      decoration: InputDecoration(
-        hintText: hint,
-        labelText: label,
-      ),
-      controller: textController,
-      validator: cardValidator,
-    );
-  }
-
-  void _refreshLastCard() async {
-    List<CardEntity?> cardsList = [];
-    await refreshCardsList(context);
-    cardsList = Provider.of<CardsList>(context, listen: false).cardsList;
-    _setLastCard(cardsList);
-  }
-
   void _setLastCard(List<CardEntity?> cardsList) {
     if (cardsList.isEmpty) {
       setState(() {
@@ -127,6 +108,13 @@ class _AddState extends State<Add> with RefreshCardsList {
     });
   }
 
+  void _refreshLastCard() async {
+    List<CardEntity?> cardsList = [];
+    await refreshCardsList(context);
+    cardsList = Provider.of<CardsList>(context, listen: false).cardsList;
+    _setLastCard(cardsList);
+  }
+
   Form _addCardForm() {
     return Form(
       key: _formKey,
@@ -137,6 +125,18 @@ class _AddState extends State<Add> with RefreshCardsList {
           _textField(_backTxtCtrl, 'Answer', 'Card back'),
         ],
       ),
+    );
+  }
+
+  TextFormField _textField(
+      TextEditingController textController, String hint, String label) {
+    return TextFormField(
+      decoration: InputDecoration(
+        hintText: hint,
+        labelText: label,
+      ),
+      controller: textController,
+      validator: cardValidator,
     );
   }
 
