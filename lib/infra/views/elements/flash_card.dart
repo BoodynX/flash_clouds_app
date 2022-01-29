@@ -99,7 +99,6 @@ class _FlashCardState extends State<FlashCard> {
               CardEntity? lastRandomCard =
                   Provider.of<RandomCard>(context, listen: false).randomCard;
               if (lastRandomCard?.id == widget.cardEntity.id) {
-                print('UPDATE RC');
                 Provider.of<RandomCard>(context, listen: false)
                     .updateCard(CardsFactory().createBlank());
               }
@@ -131,8 +130,9 @@ class _FlashCardState extends State<FlashCard> {
 
   Row _bottomRow() {
     return Row(
-      children: const [
-        SizedBox(height: 40.0),
+      children: [
+        Text(widget.cardEntity.familiarity.toString()),
+        const SizedBox(height: 40.0),
       ],
     );
   }

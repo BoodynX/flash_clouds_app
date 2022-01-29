@@ -6,6 +6,6 @@ Familiarity familiarityByVal(String? submittedValue) {
   }
 
   return Familiarity.values.firstWhere(
-      (val) => val.toString() == 'Familiarity.' + submittedValue,
+      (val) => val.toString() == submittedValue,
       orElse: () => Familiarity.none);
 }

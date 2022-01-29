@@ -1,8 +1,11 @@
 import 'package:flash_clouds_app/domain/entities/card_entity.dart';
+import 'package:flash_clouds_app/domain/enums/familiarity.dart';
 import 'package:flash_clouds_app/infra/controllers/learn_controller.dart';
 import 'package:flash_clouds_app/infra/data_structures/cards_list.dart';
 import 'package:flash_clouds_app/infra/data_structures/random_card.dart';
 import 'package:flash_clouds_app/infra/factories/cards_factory.dart';
+import 'package:flash_clouds_app/infra/local_db/cards_repository.dart';
+import 'package:flash_clouds_app/infra/views/mixins/refresh_cards_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,13 +18,15 @@ class Learn extends StatefulWidget {
   _LearnState createState() => _LearnState();
 }
 
-class _LearnState extends State<Learn> {
+class _LearnState extends State<Learn> with RefreshCardsList {
   CardEntity _lastCard = CardsFactory().createBlank();
   List<CardEntity?> _cardsList = [];
 
   @override
   Widget build(BuildContext context) {
     print('VIEW Learn');
+    refreshGlobalCardsList(context);
+    _cardsList = Provider.of<CardsList>(context, listen: false).cardsList;
     _setRandomCard();
     _setRandomCardOnFirstLoad();
 
@@ -37,10 +42,17 @@ class _LearnState extends State<Learn> {
       child:
           Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         _randomCard(),
-        _learnButtons(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [Text('Familiarity')],
+        ),
         const SizedBox(
           height: 20.0,
-        )
+        ),
+        _learnButtonsRow(),
+        const SizedBox(
+          height: 20.0,
+        ),
       ]),
     );
   }
@@ -59,24 +71,53 @@ class _LearnState extends State<Learn> {
     );
   }
 
-  Column _learnButtons() {
-    return Column(
+  Row _learnButtonsRow() {
+    const sizedBox = SizedBox(width: 20.0);
+
+    return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        ElevatedButton(
-          style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(Colors.teal)),
-          onPressed: () async {
-            await LearnController().run(context, _lastCard);
-            _setRandomCard();
-          },
-          child: const Text('Draw'),
-        ),
-        const SizedBox(
-          width: 10.0,
-        ),
+        // _learnButton('Draw'),
+        // sizedBox,
+        _learnButton('Perfect', func: _buttonPerfect),
+        sizedBox,
+        _learnButton('Medium', func: _buttonMedium),
+        sizedBox,
+        _learnButton('None', func: _buttonNone),
+        sizedBox,
       ],
     );
+  }
+
+  ElevatedButton _learnButton(String buttonText, {Function? func}) {
+    return ElevatedButton(
+      style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(Colors.teal)),
+      onPressed: () async {
+        if (func != null) func();
+        await LearnController().run(context, _lastCard);
+        _setRandomCard();
+      },
+      child: Text(buttonText),
+    );
+  }
+
+  void _buttonPerfect() {
+    _lastCard.familiarity = Familiarity.perfect;
+    CardsRepository().save(_lastCard);
+    refreshGlobalCardsList(context);
+  }
+
+  void _buttonMedium() {
+    _lastCard.familiarity = Familiarity.medium;
+    CardsRepository().save(_lastCard);
+    refreshGlobalCardsList(context);
+  }
+
+  void _buttonNone() {
+    _lastCard.familiarity = Familiarity.none;
+    CardsRepository().save(_lastCard);
+    refreshGlobalCardsList(context);
   }
 
   void _setRandomCard() {

@@ -34,7 +34,7 @@ class _AddState extends State<Add> with RefreshCardsList {
   @override
   Widget build(BuildContext context) {
     print('VIEW Add');
-    refreshCardsList(context);
+    refreshGlobalCardsList(context);
     _setLastCard(Provider.of<CardsList>(context).cardsList);
 
     return _buildView();
@@ -111,7 +111,7 @@ class _AddState extends State<Add> with RefreshCardsList {
 
   void _refreshLastCard() async {
     List<CardEntity?> cardsList = [];
-    await refreshCardsList(context);
+    await refreshGlobalCardsList(context);
     cardsList = Provider.of<CardsList>(context, listen: false).cardsList;
     _setLastCard(cardsList);
   }

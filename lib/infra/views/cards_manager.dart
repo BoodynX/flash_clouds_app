@@ -17,7 +17,7 @@ class _CardsManagerState extends State<CardsManager> with RefreshCardsList {
   @override
   Widget build(BuildContext context) {
     print('VIEW List');
-    refreshCardsList(context);
+    refreshGlobalCardsList(context);
 
     return ListView(
       children: _buildCardsWidgetsList(context),

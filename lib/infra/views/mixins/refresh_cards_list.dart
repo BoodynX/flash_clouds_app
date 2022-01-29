@@ -4,7 +4,7 @@ import 'package:flash_clouds_app/infra/local_db/cards_repository.dart';
 import 'package:provider/provider.dart';
 
 abstract class RefreshCardsList {
-  Future<void> refreshCardsList(context) async {
+  Future<void> refreshGlobalCardsList(context) async {
     List<CardEntity?> cards = await CardsRepository().getAllSortByDate();
     List<CardEntity?> cardsList =
         Provider.of<CardsList>(context, listen: false).cardsList;

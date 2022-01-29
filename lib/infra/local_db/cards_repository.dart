@@ -61,7 +61,15 @@ class CardsRepository implements ICardsRepository {
 
   @override
   Future<void> save(CardEntity card) async {
-    await ls.collection(collection).doc(card.id).set({
+    if (card.isEmpty) {
+      return;
+    }
+
+    // TODO get rid of that "6"
+    await ls.collection(collection).doc(card.id.substring(6)).delete();
+
+    // TODO get rid of that "6"
+    await ls.collection(collection).doc(card.id.substring(6)).set({
       'front': card.front,
       'back': card.back,
       'created': card.created.toString(),
@@ -71,7 +79,7 @@ class CardsRepository implements ICardsRepository {
   }
 
   @override
-  void delete(List<String> ids) async {
+  Future<void> delete(List<String> ids) async {
     for (String id in ids) {
       // TODO get rid of that "6"
       await ls.collection(collection).doc(id.substring(6)).delete();
