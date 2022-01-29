@@ -19,6 +19,12 @@ CardEntity makeNewCard(front, back) {
       isEmpty: false);
 }
 
+CardEntity copyCard(CardEntity card) {
+  return CardEntity(MockICardsRepository(), card.id, card.front, card.back,
+      card.created, card.lastKnown,
+      isEmpty: card.isEmpty);
+}
+
 @GenerateMocks([ICardsRepository])
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -66,8 +72,8 @@ void main() {
 
       var lm = LotteryMachine(repo);
       CardEntity card1 = await lm.drawCard(null);
-      CardEntity card2 = await lm.drawCard(card1);
-      CardEntity card3 = await lm.drawCard(card2);
+      CardEntity card2 = await lm.drawCard(copyCard(card1));
+      CardEntity card3 = await lm.drawCard(copyCard(card2));
 
       expect(card1.id != card2.id, true);
       expect(card2.id != card3.id, true);
