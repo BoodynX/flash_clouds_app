@@ -87,6 +87,12 @@ class _LearnState extends State<Learn> {
   }
 
   void _setRandomCardOnFirstLoad() {
+    // TODO remove this someday
+    if (_cardsList.isNotEmpty && _cardsList[0] != null) {
+      bool some = _cardsList[0]?.isEmpty as bool;
+      _cardsList = some ? [] : _cardsList;
+    }
+
     if (_lastCard.isEmpty && _cardsList.isNotEmpty) {
       LearnController().run(context, _lastCard).then((randomCard) {
         setState(() {
