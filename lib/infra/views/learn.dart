@@ -87,9 +87,9 @@ class _LearnState extends State<Learn> {
 
   void _setRandomCardOnFirstLoad() {
     if (_randomCardEntity.front == '') {
-      LearnController().run(context)?.then((randomCard) {
+      LearnController().run(context).then((randomCard) {
         setState(() {
-          _randomCardEntity = randomCard ?? _randomCardEntity;
+          _randomCardEntity = randomCard;
         });
       });
     }
