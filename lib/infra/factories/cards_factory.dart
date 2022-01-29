@@ -18,7 +18,7 @@ class CardsFactory implements ICardsFactory {
 
   @override
   CardEntity createBlank() {
-    return CardEntity(CardsRepository(), UniqueKey().toString(), '', '',
-        DateTime.now(), null);
+    return CardEntity(CardsRepository(), '', '', '', DateTime.now(), null,
+        isEmpty: true);
   }
 }

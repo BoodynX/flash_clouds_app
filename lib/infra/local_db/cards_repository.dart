@@ -9,15 +9,16 @@ class CardsRepository implements ICardsRepository {
   String collection = 'cards';
 
   @override
-  Future<List<CardEntity?>> getAll() async {
+  Future<List<CardEntity>> getAll() async {
     return await ls.collection(collection).get().then((data) {
+      List<CardEntity> cards = [];
+
       // TODO maybe some more data validation
       // in case of data corruption this will crash
       if (data == null) {
-        return [];
+        cards.add(CardsFactory().createBlank());
+        return cards;
       }
-
-      List<CardEntity> cards = [];
 
       for (MapEntry item in data.entries) {
         Map values = item.value;
@@ -32,26 +33,27 @@ class CardsRepository implements ICardsRepository {
               : DateTime.parse(values['lastKnown']),
         ));
       }
+
+      if (cards.isEmpty) {
+        cards.add(CardsFactory().createBlank());
+      }
+
       return cards;
     });
   }
 
   @override
-  Future<List<CardEntity?>> getAllSortByDate() async {
-    List<CardEntity?> cards = await getAll();
+  Future<List<CardEntity>> getAllSortByDate() async {
+    List<CardEntity> cards = await getAll();
     cards.sort(_sortByCreate);
 
     return cards;
   }
 
   @override
-  Future<CardEntity?> getLatest() async {
-    List<CardEntity?> cards = await getAll();
+  Future<CardEntity> getLatest() async {
+    List<CardEntity> cards = await getAll();
     cards.sort(_sortByCreate);
-
-    if (cards.isEmpty) {
-      return null;
-    }
 
     return cards.last;
   }

@@ -1,11 +1,11 @@
 import 'package:flash_clouds_app/domain/entities/card_entity.dart';
 
 abstract class ICardsRepository {
-  Future<List<CardEntity?>> getAll();
+  Future<List<CardEntity>> getAll();
 
-  Future<List<CardEntity?>> getAllSortByDate();
+  Future<List<CardEntity>> getAllSortByDate();
 
-  Future<CardEntity?> getLatest();
+  Future<CardEntity> getLatest();
 
   void save(CardEntity card);
 
