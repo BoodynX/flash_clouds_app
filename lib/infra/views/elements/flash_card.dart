@@ -1,5 +1,7 @@
 import 'package:flash_clouds_app/domain/entities/card_entity.dart';
 import 'package:flash_clouds_app/infra/data_structures/cards_list.dart';
+import 'package:flash_clouds_app/infra/data_structures/random_card.dart';
+import 'package:flash_clouds_app/infra/factories/cards_factory.dart';
 import 'package:flash_clouds_app/infra/local_db/cards_repository.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flip_card/flip_card_controller.dart';
@@ -76,7 +78,7 @@ class _FlashCardState extends State<FlashCard> {
       children: [
         IconButton(
             onPressed: () async {
-              if (!_enableControls) {
+              if (!_enableControls || widget.cardEntity.isEmpty) {
                 return;
               }
               setState(() {
@@ -87,9 +89,19 @@ class _FlashCardState extends State<FlashCard> {
               await _animateDeletion();
 
               widget.cardEntity.delete();
+
+              // Update Card List
               List<CardEntity?> cards =
                   await CardsRepository().getAllSortByDate();
               Provider.of<CardsList>(context, listen: false).updateList(cards);
+
+              // Check if last Random Card was not just deleted
+              CardEntity? lastRandomCard =
+                  Provider.of<RandomCard>(context, listen: false).randomCard;
+              if (lastRandomCard?.id == widget.cardEntity.id) {
+                Provider.of<RandomCard>(context, listen: false)
+                    .updateCard(CardsFactory().createBlank());
+              }
 
               setState(() {
                 _enableControls = true;
