@@ -26,12 +26,9 @@ class _LearnState extends State<Learn> with RefreshCardsList {
   Widget build(BuildContext context) {
     print('VIEW Learn');
     refreshGlobalCardsList(context);
-    _cardsList = Provider.of<CardsList>(context, listen: false).cardsList;
+    _cardsList = Provider.of<CardsList>(context).cardsList;
     _setRandomCard();
     _setRandomCardOnFirstLoad();
-
-    // Listen for change in case a card gets deleted
-    _cardsList = Provider.of<CardsList>(context).cardsList;
 
     return _buildView();
   }
