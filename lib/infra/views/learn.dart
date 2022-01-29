@@ -16,7 +16,7 @@ class Learn extends StatefulWidget {
 }
 
 class _LearnState extends State<Learn> {
-  CardEntity _randomCardEntity = CardsFactory().createBlank();
+  CardEntity _lastCard = CardsFactory().createBlank();
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +50,7 @@ class _LearnState extends State<Learn> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           FlashCard(
-            cardEntity: _randomCardEntity,
+            cardEntity: _lastCard,
           ),
         ],
       ),
@@ -65,7 +65,7 @@ class _LearnState extends State<Learn> {
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(Colors.teal)),
           onPressed: () async {
-            await LearnController().run(context);
+            await LearnController().run(context, _lastCard);
             _setRandomCard();
           },
           child: const Text('Draw'),
@@ -79,17 +79,16 @@ class _LearnState extends State<Learn> {
 
   void _setRandomCard() {
     setState(() {
-      _randomCardEntity =
-          Provider.of<RandomCard>(context, listen: false).randomCard ??
-              _randomCardEntity;
+      _lastCard = Provider.of<RandomCard>(context, listen: false).randomCard ??
+          _lastCard;
     });
   }
 
   void _setRandomCardOnFirstLoad() {
-    if (_randomCardEntity.front == '') {
-      LearnController().run(context).then((randomCard) {
+    if (_lastCard.front == '') {
+      LearnController().run(context, _lastCard).then((randomCard) {
         setState(() {
-          _randomCardEntity = randomCard;
+          _lastCard = randomCard;
         });
       });
     }

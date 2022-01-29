@@ -24,7 +24,15 @@ class LotteryMachine {
 
   CardEntity _drawNewRandomCard(
       List<CardEntity> cards, CardEntity previousCard) {
-    cards.remove(previousCard);
+    // Remove the current card from the lottery
+    for (CardEntity card in cards) {
+      bool cardsMatch = card.id == previousCard.id;
+      if (cardsMatch) {
+        cards.remove(card);
+        break;
+      }
+    }
+
     return _drawRandomCardFromAll(cards);
   }
 
