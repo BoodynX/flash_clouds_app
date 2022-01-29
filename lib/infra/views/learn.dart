@@ -17,14 +17,16 @@ class Learn extends StatefulWidget {
 
 class _LearnState extends State<Learn> {
   CardEntity _lastCard = CardsFactory().createBlank();
+  List<CardEntity?> _cardsList = [];
 
   @override
   Widget build(BuildContext context) {
+    print('VIEW Learn');
     _setRandomCard();
     _setRandomCardOnFirstLoad();
 
     // Listen for change in case a card gets deleted
-    Provider.of<CardsList>(context).cardsList;
+    _cardsList = Provider.of<CardsList>(context).cardsList;
 
     return _buildView();
   }
@@ -85,7 +87,7 @@ class _LearnState extends State<Learn> {
   }
 
   void _setRandomCardOnFirstLoad() {
-    if (_lastCard.front == '') {
+    if (_lastCard.isEmpty && _cardsList.isNotEmpty) {
       LearnController().run(context, _lastCard).then((randomCard) {
         setState(() {
           _lastCard = randomCard;

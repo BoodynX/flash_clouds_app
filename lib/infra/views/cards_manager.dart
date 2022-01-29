@@ -16,6 +16,7 @@ class CardsManager extends StatefulWidget {
 class _CardsManagerState extends State<CardsManager> with RefreshCardsList {
   @override
   Widget build(BuildContext context) {
+    print('VIEW List');
     refreshCardsList(context);
 
     return ListView(
@@ -29,7 +30,7 @@ class _CardsManagerState extends State<CardsManager> with RefreshCardsList {
     cardWidgets.add(const SizedBox(height: 10.0));
 
     for (CardEntity? card in cardsList) {
-      if (card == null) {
+      if (card == null || card.isEmpty) {
         continue;
       }
 

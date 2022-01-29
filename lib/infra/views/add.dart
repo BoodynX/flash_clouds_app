@@ -33,6 +33,7 @@ class _AddState extends State<Add> with RefreshCardsList {
 
   @override
   Widget build(BuildContext context) {
+    print('VIEW Add');
     refreshCardsList(context);
     _setLastCard(Provider.of<CardsList>(context).cardsList);
 

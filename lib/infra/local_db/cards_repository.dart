@@ -1,4 +1,5 @@
 import 'package:flash_clouds_app/domain/entities/card_entity.dart';
+import 'package:flash_clouds_app/domain/enums/familiarity.dart';
 import 'package:flash_clouds_app/domain/repositories/i_cards_repository.dart';
 import 'package:flash_clouds_app/infra/factories/cards_factory.dart';
 import 'package:localstore/localstore.dart';
@@ -24,14 +25,14 @@ class CardsRepository implements ICardsRepository {
         Map values = item.value;
 
         cards.add(factory.create(
-          item.key,
-          values['front'],
-          values['back'],
-          DateTime.parse(values['created']),
-          values['lastKnown'] == 'null' || values['lastKnown'] == null
-              ? null
-              : DateTime.parse(values['lastKnown']),
-        ));
+            item.key,
+            values['front'],
+            values['back'],
+            DateTime.parse(values['created']),
+            values['lastKnown'] == 'null' || values['lastKnown'] == null
+                ? null
+                : DateTime.parse(values['lastKnown']),
+            familiarityByVal(values['familiarity'])));
       }
 
       if (cards.isEmpty) {
@@ -65,6 +66,7 @@ class CardsRepository implements ICardsRepository {
       'back': card.back,
       'created': card.created.toString(),
       'lastKnown': card.lastKnown.toString(),
+      'familiarity': card.familiarity.toString(),
     });
   }
 

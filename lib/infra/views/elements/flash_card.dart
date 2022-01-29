@@ -99,6 +99,7 @@ class _FlashCardState extends State<FlashCard> {
               CardEntity? lastRandomCard =
                   Provider.of<RandomCard>(context, listen: false).randomCard;
               if (lastRandomCard?.id == widget.cardEntity.id) {
+                print('UPDATE RC');
                 Provider.of<RandomCard>(context, listen: false)
                     .updateCard(CardsFactory().createBlank());
               }

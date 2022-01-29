@@ -1,4 +1,5 @@
 import 'package:flash_clouds_app/domain/entities/card_entity.dart';
+import 'package:flash_clouds_app/domain/enums/familiarity.dart';
 import 'package:flash_clouds_app/domain/repositories/i_cards_repository.dart';
 import 'package:flash_clouds_app/domain/services/lottery_machine.dart';
 import 'package:flutter/material.dart';
@@ -10,18 +11,19 @@ import 'lottery_machine_test.mocks.dart';
 
 CardEntity makeBlackCard() {
   return CardEntity(MockICardsRepository(), '', '', '', DateTime.now(), null,
+      Familiarity.none,
       isEmpty: true);
 }
 
 CardEntity makeNewCard(front, back) {
   return CardEntity(MockICardsRepository(), UniqueKey().toString(), front, back,
-      DateTime.now(), null,
+      DateTime.now(), null, Familiarity.none,
       isEmpty: false);
 }
 
 CardEntity copyCard(CardEntity card) {
   return CardEntity(MockICardsRepository(), card.id, card.front, card.back,
-      card.created, card.lastKnown,
+      card.created, card.lastKnown, Familiarity.none,
       isEmpty: card.isEmpty);
 }
 
