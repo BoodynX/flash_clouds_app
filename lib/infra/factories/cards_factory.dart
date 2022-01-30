@@ -2,7 +2,7 @@ import 'package:flash_clouds_app/domain/entities/card_entity.dart';
 import 'package:flash_clouds_app/domain/enums/familiarity.dart';
 import 'package:flash_clouds_app/domain/factories/i_cards_factory.dart';
 import 'package:flash_clouds_app/infra/local_db/cards_repository.dart';
-import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 class CardsFactory implements ICardsFactory {
   @override
@@ -14,8 +14,8 @@ class CardsFactory implements ICardsFactory {
 
   @override
   CardEntity createNew(String front, String back) {
-    return CardEntity(CardsRepository(), UniqueKey().toString(), front, back,
-        DateTime.now(), null, Familiarity.none);
+    return CardEntity(CardsRepository(), const Uuid().v4().toString(), front,
+        back, DateTime.now(), null, Familiarity.none);
   }
 
   @override

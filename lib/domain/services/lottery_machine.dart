@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flash_clouds_app/domain/entities/card_entity.dart';
 import 'package:flash_clouds_app/domain/enums/familiarity.dart';
 import 'package:flash_clouds_app/domain/repositories/i_cards_repository.dart';
+import 'package:flash_clouds_app/infra/factories/cards_factory.dart';
 
 class LotteryMachine {
   ICardsRepository repo;
@@ -46,7 +47,8 @@ class LotteryMachine {
     if (group > 14) fami = Familiarity.medium;
     if (group > 18) fami = Familiarity.perfect;
 
-    List<CardEntity?> cardsCopy = [];
+    // Blanc card needed or else Dart will complain
+    List<CardEntity> cardsCopy = [CardsFactory().createBlank()];
 
     for (CardEntity card in cards) {
       bool cardsMatch = card.familiarity == fami;
@@ -55,10 +57,13 @@ class LotteryMachine {
       }
     }
 
-    if (cardsCopy.isEmpty) {
+    // Copy full list if nothing was added or Remove blanc card
+    if (cardsCopy.length == 1) {
       cardsCopy = cards;
+    } else {
+      cardsCopy.removeAt(0);
     }
 
-    return cards[random.nextInt(cardsCopy.length)];
+    return cardsCopy[random.nextInt(cardsCopy.length)];
   }
 }

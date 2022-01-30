@@ -25,7 +25,7 @@ class CardsRepository implements ICardsRepository {
         Map values = item.value;
 
         cards.add(factory.create(
-            item.key,
+            stripDbKeyToId(item.key),
             values['front'],
             values['back'],
             DateTime.parse(values['created']),
@@ -65,11 +65,10 @@ class CardsRepository implements ICardsRepository {
       return;
     }
 
-    // TODO get rid of that "6"
-    await ls.collection(collection).doc(card.id.substring(6)).delete();
+    // This is needed for editing, because ls doesn't update records
+    await ls.collection(collection).doc(card.id).delete();
 
-    // TODO get rid of that "6"
-    await ls.collection(collection).doc(card.id.substring(6)).set({
+    await ls.collection(collection).doc(card.id).set({
       'front': card.front,
       'back': card.back,
       'created': card.created.toString(),
@@ -81,8 +80,7 @@ class CardsRepository implements ICardsRepository {
   @override
   Future<void> delete(List<String> ids) async {
     for (String id in ids) {
-      // TODO get rid of that "6"
-      await ls.collection(collection).doc(id.substring(6)).delete();
+      await ls.collection(collection).doc(id).delete();
     }
   }
 
@@ -95,5 +93,13 @@ class CardsRepository implements ICardsRepository {
       return false;
     }
     return true;
+  }
+
+  String stripDbKeyToId(String dbId) {
+    // Strip id from the prefix added by the local storage package
+    // 2 for slashes before after
+    int trimAmount = collection.length + 2;
+
+    return dbId.substring(trimAmount);
   }
 }
