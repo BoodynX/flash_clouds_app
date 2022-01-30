@@ -40,11 +40,11 @@ class LotteryMachine {
   CardEntity _drawRandomCardFromAll(List<CardEntity> cards) {
     final random = Random();
 
-    int group = random.nextInt(10);
+    int group = random.nextInt(20);
 
     Familiarity fami = Familiarity.none;
-    if (group > 5) fami = Familiarity.medium;
-    if (group > 8) fami = Familiarity.perfect;
+    if (group > 14) fami = Familiarity.medium;
+    if (group > 18) fami = Familiarity.perfect;
 
     List<CardEntity?> cardsCopy = [];
 
