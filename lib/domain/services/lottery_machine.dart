@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flash_clouds_app/domain/entities/card_entity.dart';
+import 'package:flash_clouds_app/domain/enums/familiarity.dart';
 import 'package:flash_clouds_app/domain/repositories/i_cards_repository.dart';
 
 class LotteryMachine {
@@ -37,7 +38,27 @@ class LotteryMachine {
   }
 
   CardEntity _drawRandomCardFromAll(List<CardEntity> cards) {
-    final _random = Random();
-    return cards[_random.nextInt(cards.length)];
+    final random = Random();
+
+    int group = random.nextInt(10);
+
+    Familiarity fami = Familiarity.none;
+    if (group > 5) fami = Familiarity.medium;
+    if (group > 8) fami = Familiarity.perfect;
+
+    List<CardEntity?> cardsCopy = [];
+
+    for (CardEntity card in cards) {
+      bool cardsMatch = card.familiarity == fami;
+      if (cardsMatch) {
+        cardsCopy.add(card);
+      }
+    }
+
+    if (cardsCopy.isEmpty) {
+      cardsCopy = cards;
+    }
+
+    return cards[random.nextInt(cardsCopy.length)];
   }
 }
