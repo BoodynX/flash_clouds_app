@@ -15,7 +15,7 @@ class LotteryMachine {
       return cards[0];
     }
 
-    if (previousCard == null) {
+    if (previousCard == null || previousCard.isEmpty) {
       return _drawRandomCardFromAll(cards);
     }
 
