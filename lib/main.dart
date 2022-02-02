@@ -4,8 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'infra/data_structures/cards_list.dart';
-import 'infra/views/add.dart';
-import 'infra/views/cards_manager.dart';
+import 'infra/views/add_cards.dart';
+import 'infra/views/all_cards.dart';
 import 'infra/views/learn.dart';
 
 void main() async {
@@ -28,8 +28,8 @@ class _MainState extends State<Main> {
   int _bottomNavState = 0;
   final List<Widget> _pages = [
     const Learn(),
-    const CardsManager(),
-    const Add(),
+    const AllCards(),
+    const AddCards(),
   ];
 
   @override

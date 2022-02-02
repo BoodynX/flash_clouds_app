@@ -6,17 +6,17 @@ import 'package:provider/provider.dart';
 
 import 'elements/flash_card.dart';
 
-class CardsManager extends StatefulWidget {
-  const CardsManager({Key? key}) : super(key: key);
+class AllCards extends StatefulWidget {
+  const AllCards({Key? key}) : super(key: key);
 
   @override
-  _CardsManagerState createState() => _CardsManagerState();
+  _AllCardsState createState() => _AllCardsState();
 }
 
-class _CardsManagerState extends State<CardsManager> with RefreshCardsList {
+class _AllCardsState extends State<AllCards> with RefreshCardsList {
   @override
   Widget build(BuildContext context) {
-    print('VIEW List');
+    print('VIEW All Cards');
     refreshGlobalCardsList(context);
 
     return ListView(

@@ -8,14 +8,14 @@ import 'package:flash_clouds_app/infra/views/mixins/refresh_cards_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class Add extends StatefulWidget {
-  const Add({Key? key}) : super(key: key);
+class AddCards extends StatefulWidget {
+  const AddCards({Key? key}) : super(key: key);
 
   @override
-  _AddState createState() => _AddState();
+  _AddCardsState createState() => _AddCardsState();
 }
 
-class _AddState extends State<Add> with RefreshCardsList {
+class _AddCardsState extends State<AddCards> with RefreshCardsList {
   final _formKey = GlobalKey<FormState>();
   final _frontTxtCtrl = TextEditingController();
   final _backTxtCtrl = TextEditingController();
@@ -155,6 +155,7 @@ class _AddState extends State<Add> with RefreshCardsList {
                     _frontTxtCtrl.text, _backTxtCtrl.text);
                 await _cardsRepo.save(card);
                 _refreshLastCard();
+                _formKey.currentState!.reset();
               }
             },
             child: const Text('Add'),
