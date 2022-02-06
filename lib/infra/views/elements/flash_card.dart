@@ -130,9 +130,8 @@ class _FlashCardState extends State<FlashCard> {
 
   Row _bottomRow() {
     return Row(
-      children: [
-        Text(widget.cardEntity.familiarity.toString()),
-        const SizedBox(height: 40.0),
+      children: const [
+        SizedBox(height: 40.0),
       ],
     );
   }

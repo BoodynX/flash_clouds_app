@@ -44,7 +44,7 @@ class _MainState extends State<Main> {
       child: MaterialApp(
         home: Scaffold(
           appBar: AppBar(
-            title: const Text('Flash Clouds'),
+            title: const Text('Flash Clouds v0.0.1'),
             backgroundColor: Colors.teal,
           ),
           body: SafeArea(
