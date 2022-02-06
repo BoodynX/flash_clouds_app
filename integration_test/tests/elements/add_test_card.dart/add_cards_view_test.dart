@@ -3,13 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
-import '../elements/bottom_navbar_finder.dart';
+import '../../../elements/add_test_card.dart';
+import '../../../elements/bottom_navbar_finder.dart';
+import '../../../elements/find_card.dart';
+import '../../../elements/tap_card.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   group('Test ADD CARDS View', () {
-    testWidgets('Test ADD CARDS View - First Load',
+    testWidgets('Test ADD CARDS View. First Load.',
         (WidgetTester tester) async {
       app.main();
       await tester.pumpAndSettle();
@@ -28,53 +31,36 @@ void main() {
       expect(find.text('Question'), findsOneWidget);
       expect(find.text('Answer'), findsOneWidget);
       expect(find.text('Add'), findsOneWidget);
-      final formField = find.byType(TextFormField);
-      expect(formField, findsNWidgets(2));
+      expect(find.byType(TextFormField), findsNWidgets(2));
 
       findBottomNavBar();
     });
 
     testWidgets(
-        'Test ADD CARDS View - Add two cards, '
-        'tap one from both sides and delete them', (WidgetTester tester) async {
+        'Test ADD CARDS View. Add two cards, '
+        'tap one from both sides and delete them.',
+        (WidgetTester tester) async {
       app.main();
       await tester.pumpAndSettle();
-      await goToAddCardsView(tester);
+      // Enter Text in Form Field
+      await addTestCard(tester, 'Sample Question', 'Sample Answer');
+
+      // Check last added card, with tap
+      findCard('Sample Question', 'Sample Answer');
+      await tapCard(tester, 'Sample Question', 'Sample Answer');
 
       // Enter Text in Form Field
-      final formField = find.byType(TextFormField);
-      await tester.enterText(formField.first, 'Sample Question');
-      await tester.enterText(formField.last, 'Sample Answer');
-      await tester.tap(find.widgetWithText(ElevatedButton, 'Add'));
-      await tester.pumpAndSettle();
+      await addTestCard(tester, 'Sample Question 2', 'Sample Answer 2');
 
       // Check last added card
-      expect(find.text('Sample Question'), findsOneWidget);
-      expect(find.text('Sample Answer'), findsOneWidget);
-
-      // Tap Card from both sides
-      await tester.tap(find.text('Sample Question'));
-      await tester.pumpAndSettle();
-      await tester.tap(find.text('Sample Answer'));
-      await tester.pumpAndSettle();
-
-      // Enter Text in Form Field
-      await tester.enterText(formField.first, 'Sample Question 2');
-      await tester.enterText(formField.last, 'Sample Answer 2');
-      await tester.tap(find.widgetWithText(ElevatedButton, 'Add'));
-      await tester.pumpAndSettle();
-
-      // Check last added card
-      expect(find.text('Sample Question 2'), findsOneWidget);
-      expect(find.text('Sample Answer 2'), findsOneWidget);
+      findCard('Sample Question 2', 'Sample Answer 2');
 
       // Delete last added card
       await tester.tap(find.byIcon(Icons.delete_outlined).first);
       await tester.pumpAndSettle();
 
       // Check last added card
-      expect(find.text('Sample Question'), findsOneWidget);
-      expect(find.text('Sample Answer'), findsOneWidget);
+      findCard('Sample Question', 'Sample Answer');
 
       // Delete last added card
       await tester.tap(find.byIcon(Icons.delete_outlined).first);

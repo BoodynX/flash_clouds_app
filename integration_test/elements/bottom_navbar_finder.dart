@@ -8,7 +8,18 @@ void findBottomNavBar() {
 }
 
 Future<void> goToAddCardsView(WidgetTester tester) async {
-  final addButton = find.byIcon(Icons.post_add_outlined);
+  await _tapAndPump(tester, find.byIcon(Icons.post_add_outlined));
+}
+
+Future<void> goToLearnView(WidgetTester tester) async {
+  await _tapAndPump(tester, find.byIcon(Icons.school));
+}
+
+Future<void> goToAllCardsView(WidgetTester tester) async {
+  await _tapAndPump(tester, find.byIcon(Icons.receipt_long));
+}
+
+Future<void> _tapAndPump(WidgetTester tester, Finder addButton) async {
   await tester.tap(addButton);
   await tester.pumpAndSettle();
 }

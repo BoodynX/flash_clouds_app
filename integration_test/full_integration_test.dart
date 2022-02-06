@@ -1,7 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'tests/add_cards_view_test.dart' as add_cards_view;
 import 'tests/all_cards_view_test.dart' as all_cards_view;
+import 'tests/elements/add_test_card.dart/add_cards_view_test.dart'
+    as add_cards_view;
 import 'tests/learn_view_test.dart' as learn_view;
 
 void main() {
