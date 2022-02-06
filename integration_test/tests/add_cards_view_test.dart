@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
-import '../../../elements/add_test_card.dart';
-import '../../../elements/bottom_navbar_finder.dart';
-import '../../../elements/find_card.dart';
-import '../../../elements/tap_card.dart';
+import '../elements/add_test_card.dart';
+import '../elements/bottom_navbar_finder.dart';
+import '../elements/find_card.dart';
+import '../elements/tap_card.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
