@@ -16,7 +16,6 @@ class AllCards extends StatefulWidget {
 class _AllCardsState extends State<AllCards> with RefreshCardsList {
   @override
   Widget build(BuildContext context) {
-    print('VIEW All Cards');
     refreshGlobalCardsList(context);
 
     return ListView(

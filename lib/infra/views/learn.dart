@@ -24,7 +24,6 @@ class _LearnState extends State<Learn> with RefreshCardsList {
 
   @override
   Widget build(BuildContext context) {
-    print('VIEW Learn');
     refreshGlobalCardsList(context);
     _cardsList = Provider.of<CardsList>(context).cardsList;
     _setRandomCard();
