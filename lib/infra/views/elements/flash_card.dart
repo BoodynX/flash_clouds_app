@@ -3,6 +3,7 @@ import 'package:flash_clouds_app/infra/data_structures/cards_list.dart';
 import 'package:flash_clouds_app/infra/data_structures/random_card.dart';
 import 'package:flash_clouds_app/infra/factories/cards_factory.dart';
 import 'package:flash_clouds_app/infra/local_db/cards_repository.dart';
+import 'package:flash_clouds_app/style/fc_style.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flip_card/flip_card_controller.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ class FlashCard extends StatefulWidget {
 
 class _FlashCardState extends State<FlashCard> {
   late FlipCardController _controller;
-  Color _cardColor = Colors.white;
+  Color _cardColor = FcStyle.bg;
   double _opacity = 1.0;
   Duration _opacityAnimationDuration = const Duration(milliseconds: 500);
   bool _enableControls = true;
@@ -110,7 +111,7 @@ class _FlashCardState extends State<FlashCard> {
             icon: const Icon(
               Icons.delete_outlined,
               size: 20.0,
-              color: Colors.grey,
+              color: FcStyle.shadow,
             ))
       ],
     );
@@ -141,12 +142,12 @@ class _FlashCardState extends State<FlashCard> {
         color: _cardColor,
         border: Border.all(
           width: 1.0,
-          color: Colors.blueGrey.withOpacity(0.3),
+          color: FcStyle.shadow.withOpacity(0.3),
         ),
         borderRadius: const BorderRadius.all(Radius.circular(10)),
         boxShadow: [
           BoxShadow(
-            color: Colors.blueGrey.withOpacity(0.3),
+            color: FcStyle.shadow.withOpacity(0.3),
             spreadRadius: 3,
             blurRadius: 5,
             offset: const Offset(0, 3),
@@ -157,7 +158,7 @@ class _FlashCardState extends State<FlashCard> {
   Future<void> _animateDeletion() async {
     // without this, after deleting a flipped card, next card in list gets flipped instantly
     setState(() {
-      _cardColor = const Color.fromRGBO(255, 205, 210, 1.0);
+      _cardColor = FcStyle.delete;
       _opacity = 0.0;
       _opacityAnimationDuration = const Duration(milliseconds: 500);
     });
@@ -166,7 +167,7 @@ class _FlashCardState extends State<FlashCard> {
     }
     await Future.delayed(const Duration(milliseconds: 500));
     setState(() {
-      _cardColor = Colors.white;
+      _cardColor = FcStyle.bg;
       _opacity = 1.0;
       _opacityAnimationDuration = Duration.zero;
     });

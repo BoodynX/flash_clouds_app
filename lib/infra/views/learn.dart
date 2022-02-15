@@ -6,6 +6,7 @@ import 'package:flash_clouds_app/infra/data_structures/random_card.dart';
 import 'package:flash_clouds_app/infra/factories/cards_factory.dart';
 import 'package:flash_clouds_app/infra/local_db/cards_repository.dart';
 import 'package:flash_clouds_app/infra/views/mixins/refresh_cards_list.dart';
+import 'package:flash_clouds_app/style/fc_style.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -88,7 +89,7 @@ class _LearnState extends State<Learn> with RefreshCardsList {
   ElevatedButton _learnButton(String buttonText, {Function? func}) {
     return ElevatedButton(
       style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color>(Colors.teal)),
+          backgroundColor: MaterialStateProperty.all<Color>(FcStyle.main)),
       onPressed: () async {
         if (func != null) func();
         await LearnController().run(context, _lastCard);

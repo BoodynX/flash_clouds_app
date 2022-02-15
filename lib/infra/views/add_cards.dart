@@ -5,6 +5,7 @@ import 'package:flash_clouds_app/infra/factories/cards_factory.dart';
 import 'package:flash_clouds_app/infra/local_db/cards_repository.dart';
 import 'package:flash_clouds_app/infra/views/elements/flash_card.dart';
 import 'package:flash_clouds_app/infra/views/mixins/refresh_cards_list.dart';
+import 'package:flash_clouds_app/style/fc_style.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -147,7 +148,8 @@ class _AddCardsState extends State<AddCards> with RefreshCardsList {
         children: [
           ElevatedButton(
             style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.teal)),
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(FcStyle.main)),
             onPressed: () async {
               if (_formKey.currentState!.validate()) {
                 CardEntity card = _cardsFactory.createNew(

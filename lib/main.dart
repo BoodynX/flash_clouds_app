@@ -1,4 +1,5 @@
 import 'package:flash_clouds_app/infra/data_structures/random_card.dart';
+import 'package:flash_clouds_app/style/fc_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -12,9 +13,10 @@ void main() async {
   // required by the local storage pkg
   WidgetsFlutterBinding.ensureInitialized();
 
+  // [FN] lock orientation to portrait mode only for now
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-  runApp(Main());
+  runApp(const Main());
 }
 
 class Main extends StatefulWidget {
@@ -45,7 +47,7 @@ class _MainState extends State<Main> {
         home: Scaffold(
           appBar: AppBar(
             title: const Text('Flash Clouds v0.0.1'),
-            backgroundColor: Colors.teal,
+            backgroundColor: FcStyle.main,
           ),
           body: SafeArea(
             child: _pages[_bottomNavState],
@@ -73,9 +75,9 @@ class _MainState extends State<Main> {
         ),
       ],
       currentIndex: _bottomNavState,
-      selectedItemColor: Colors.amberAccent,
-      unselectedItemColor: Colors.white,
-      backgroundColor: Colors.teal,
+      selectedItemColor: FcStyle.select,
+      unselectedItemColor: FcStyle.bg,
+      backgroundColor: FcStyle.main,
       onTap: _updateBottomNavState,
       selectedFontSize: 12.0,
       unselectedFontSize: 12.0,
