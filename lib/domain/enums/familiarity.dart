@@ -1,7 +1,7 @@
 enum Familiarity { none, medium, perfect }
 
 // Translate string number of familiarity level in to Familiarity enum value.
-// IUseful when retrieving familiarity level from storage.
+// Useful when retrieving familiarity level from storage.
 Familiarity familiarityByVal(String? submittedValue) {
   if (submittedValue == null) {
     return Familiarity.none;
